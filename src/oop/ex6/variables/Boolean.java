@@ -1,5 +1,6 @@
 package oop.ex6.variables;
 
+
 import oop.ex6.main.CodeException;
 
 /**
@@ -7,5 +8,20 @@ import oop.ex6.main.CodeException;
  */
 public class Boolean extends Variable {
 
+    public Boolean(String value,String name, String modifier) throws CodeException{
+            super(value, name, modifier);
+    }
+
+    boolean checkIfValueValid(String stringToCheck) {
+        boolean result = false;
+        if ((stringToCheck.equals("false")) || (stringToCheck.equals("true"))) {
+            result = true;
+        }
+        return result;
+    }
+
+    void setType() {
+        this.type = "boolean";
     }
 }
+
