@@ -12,8 +12,12 @@ public class Closure {
     private HashSet<Variable> variables;
     private HashSet<Method> methods;
 
-    boolean addVariable(Variable variableToAdd);
+    boolean addVariable(Variable variableToAdd){
+        return variables.add(variableToAdd);
+    }
 
-    boolean addMethod(Method methodToAdd);
+    boolean addMethod(Method methodToAdd){
+        return methods.add(methodToAdd);
+    }
 
 }
