@@ -43,6 +43,5 @@ public class VariableGenerator {
 
             default: throw new CodeException("Unsupported variable type");
         }
-
     }
 }
