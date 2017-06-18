@@ -6,7 +6,6 @@ import oop.ex6.main.CodeException;
  * A class for generating variables
  */
 public class VariableGenerator {
-    private enum VariableType {INT, }
     private static VariableGenerator instance = null;
 
     private VariableGenerator(){} // private const. to restrict new instances
