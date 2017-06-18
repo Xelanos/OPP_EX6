@@ -8,7 +8,7 @@ import oop.ex6.main.CodeException;
 public class VariableException extends CodeException {
 
     public VariableException(String varType, String varValue) {
-        super("Can't create a variable of type "+varType+" with the value"+varValue);
+        super("Can't create a variable of type "+varType+" with the value: "+varValue);
     }
 
     VariableException(String message){
