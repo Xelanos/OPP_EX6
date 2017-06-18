@@ -25,9 +25,22 @@ public abstract class Variable {
     abstract void setType();
 
     private void checkIfNameValid(String variableName) throws VariableException {
-        if (something){
-
-        } else throw new VariableException("Bad variable name");
+        String finalSubString = variableName;
+        String startsWithNumberRegex = "^\\d";
+        String isAllWordRegex = "^\\w+";
+        if (variableName.matches(startsWithNumberRegex)) {
+            throw new VariableNamingExeption(variableName,"Variable name can't start with a number");
+        }
+        if (variableName.startsWith("_")){
+            finalSubString = variableName.substring(1);
+            if (finalSubString.length() == 0) {
+                throw new VariableNamingExeption(variableName,"Variable name can't be underscore");
+            }
+        }
+        if (!finalSubString.matches(isAllWordRegex)){
+            throw new VariableNamingExeption(variableName,
+                    "Variable name can only contain numbers, letters and underscore");
+        }
     }
 
     public String getName() {
