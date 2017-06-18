@@ -17,7 +17,7 @@ public abstract class Variable {
         if (checkIfValueValid(value)){
             this.name = name;
             this.modifier = modifier;
-        } else throw new CodeException("Bad");
+        } else throw new VariableExeption(this.type, value);
     }
 
     abstract boolean checkIfValueValid(String stringToCheck);
