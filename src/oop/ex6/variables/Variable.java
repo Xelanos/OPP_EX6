@@ -5,7 +5,7 @@ import oop.ex6.main.CodeException;
 /**
  * Created by OrMiz on 12/06/2017.
  */
-public abstract class Variable {
+abstract class Variable {
 
     protected String type;
     protected String name;

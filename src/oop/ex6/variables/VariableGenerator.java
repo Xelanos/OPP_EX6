@@ -41,7 +41,7 @@ public class VariableGenerator {
 
             case "String": return new VarString(varValue,varName,varModifier);
 
-            default: throw new CodeException("Bad variable type");
+            default: throw new CodeException("Unsupported variable type");
         }
 
     }
