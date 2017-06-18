@@ -26,9 +26,8 @@ public abstract class Variable {
 
     private void checkIfNameValid(String variableName) throws VariableException {
         String finalSubString = variableName;
-        String startsWithNumberRegex = "^\\d";
         String isAllWordRegex = "^\\w+";
-        if (variableName.matches(startsWithNumberRegex)) {
+        if (Character.isDigit(variableName.charAt(0))) {
             throw new VariableNamingExeption(variableName,"Variable name can't start with a number");
         }
         if (variableName.startsWith("_")){
