@@ -10,7 +10,7 @@ public class Char extends Variable {
     public Char(String value,String name, String modifier) throws CodeException{
         super(value, name, modifier);
     }
-    boolean checkIfValueValid(String stringToCheck) {
+    public boolean checkIfValueValid(String stringToCheck) {
         boolean result = false;
         if (stringToCheck.length() == 3){
             if (stringToCheck.startsWith("'") && stringToCheck.endsWith("'")){

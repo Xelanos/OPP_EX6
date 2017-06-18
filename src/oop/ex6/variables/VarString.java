@@ -10,7 +10,7 @@ class VarString extends Variable {
     VarString(String value,String name, String modifier) throws CodeException {
         super(value, name, modifier);
     }
-    boolean checkIfValueValid(String stringToCheck) {
+    public boolean checkIfValueValid(String stringToCheck) {
         boolean result = false;
         if (stringToCheck.startsWith("\"") && stringToCheck.endsWith("\"")){
             result = true;

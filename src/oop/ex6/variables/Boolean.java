@@ -12,7 +12,7 @@ class Boolean extends Variable {
             super(value, name, modifier);
     }
 
-    boolean checkIfValueValid(String stringToCheck) {
+    public boolean checkIfValueValid(String stringToCheck) {
         boolean result = false;
         if ((stringToCheck.equals("false")) || (stringToCheck.equals("true"))) {
             result = true;

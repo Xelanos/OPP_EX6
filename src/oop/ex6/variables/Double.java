@@ -10,7 +10,7 @@ class Double extends Variable {
     Double(String value,String name, String modifier) throws CodeException{
         super(value, name, modifier);
     }
-    boolean checkIfValueValid(String stringToCheck) {
+    public boolean checkIfValueValid(String stringToCheck) {
         boolean result = true;
         try{
             java.lang.Double.parseDouble(stringToCheck);
