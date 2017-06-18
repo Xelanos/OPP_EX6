@@ -15,13 +15,39 @@ public abstract class Variable {
     Variable(String value,String name, String modifier) throws CodeException{
         setType();
         if (checkIfValueValid(value)){
+            checkIfNameValid(name);
             this.name = name;
             this.modifier = modifier;
-        } else throw new VarExeption(this.type, value);
+        } else throw new VariableException(this.type, value);
     }
 
-    abstract boolean checkIfValueValid(String stringToCheck);
+    public abstract boolean checkIfValueValid(String stringToCheck);
     abstract void setType();
 
+    private void checkIfNameValid(String variableName) throws VariableException {
+        String finalSubString = variableName;
+        String isAllWordRegex = "^\\w+";
+        if (Character.isDigit(variableName.charAt(0))) {
+            throw new VariableNamingExeption(variableName,"Variable name can't start with a number");
+        }
+        if (variableName.startsWith("_")){
+            finalSubString = variableName.substring(1);
+            if (finalSubString.length() == 0) {
+                throw new VariableNamingExeption(variableName,"Variable name can't be underscore");
+            }
+        }
+        if (!finalSubString.matches(isAllWordRegex)){
+            throw new VariableNamingExeption(variableName,
+                    "Variable name can only contain numbers, letters and underscore");
+        }
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getType() {
+        return type;
+    }
 
 }

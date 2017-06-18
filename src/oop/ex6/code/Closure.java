@@ -1,5 +1,6 @@
 package oop.ex6.code;
 
+import oop.ex6.main.CodeException;
 import oop.ex6.variables.Variable;
 
 import java.util.HashSet;
@@ -18,6 +19,24 @@ public class Closure {
 
     boolean addMethod(Method methodToAdd){
         return methods.add(methodToAdd);
+    }
+
+    Method getMethod(String methodName) throws CodeException {
+        for (Method method : methods){
+            if (method.getName().equals(methodName)){
+                return method;
+            }
+        }
+        throw new CodeException("Unknown method: "+methodName);
+    }
+
+    Variable getVariable(String variableName) throws CodeException {
+        for (Variable variable : variables){
+            if (variable.getName().equals(variableName)){
+                return variable;
+            }
+        }
+        throw new CodeException("Unknown variable: "+variableName);
     }
 
 }
