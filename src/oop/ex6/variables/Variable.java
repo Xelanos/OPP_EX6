@@ -21,7 +21,7 @@ public abstract class Variable {
         } else throw new VariableException(this.type, value);
     }
 
-    abstract boolean checkIfValueValid(String stringToCheck);
+    public abstract boolean checkIfValueValid(String stringToCheck);
     abstract void setType();
 
     private void checkIfNameValid(String variableName) throws VariableException {
@@ -30,5 +30,12 @@ public abstract class Variable {
         } else throw new VariableException("Bad variable name");
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public String getType() {
+        return type;
+    }
 
 }
