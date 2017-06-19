@@ -1,6 +1,7 @@
 package oop.ex6.variables;
 
 import oop.ex6.main.CodeException;
+import oop.ex6.main.RegexWorker;
 
 /**
  * Created by OrMiz on 12/06/2017.
@@ -12,7 +13,7 @@ public abstract class Variable {
     protected String modifier;
 
 
-    Variable(String value,String name, String modifier) throws CodeException{
+    Variable(String value,String name, String modifier) throws VariableException{
         setType();
         if (checkIfValueValid(value)){
             checkIfNameValid(name);
@@ -26,7 +27,6 @@ public abstract class Variable {
 
     private void checkIfNameValid(String variableName) throws VariableException {
         String finalSubString = variableName;
-        String isAllWordRegex = "^\\w+";
         if (Character.isDigit(variableName.charAt(0))) {
             throw new VariableNamingExeption(variableName,"Variable name can't start with a number");
         }
@@ -36,7 +36,7 @@ public abstract class Variable {
                 throw new VariableNamingExeption(variableName,"Variable name can't be underscore");
             }
         }
-        if (!finalSubString.matches(isAllWordRegex)){
+        if (!finalSubString.matches(RegexWorker.IS_ALL_WORD_REGEX)){
             throw new VariableNamingExeption(variableName,
                     "Variable name can only contain numbers, letters and underscore");
         }

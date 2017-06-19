@@ -14,6 +14,7 @@ public class RegexWorker {
     public static final String END_WITH_EQUAL = "=$";
     public static final String FIRST_WORD =
             "(\\w*)+[(]|^\\s*(\\w*)+[(]|(\\w*)\\s[=]|^\\s*(\\w*)\\s[=]|^\\s*(\\w*)|(\\w*)";
+    public static final String IS_ALL_WORD_REGEX = "^\\w+";
 
     static String getFirstWord(String line) throws CodeException{
         Pattern firstWordPattern = Pattern.compile(FIRST_WORD);

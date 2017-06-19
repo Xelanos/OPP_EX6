@@ -7,6 +7,7 @@ import oop.ex6.main.CodeException;
  */
 public class GlobalBlock extends CodeBlock {
 
+    @Override
     void blockCheck() throws CodeException {
 
     }
