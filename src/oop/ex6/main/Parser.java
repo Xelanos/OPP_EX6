@@ -28,6 +28,7 @@ public class Parser {
                 // TODO: Once we did pop, add the block that pop into the next block closure.
                 // TODO: If Line is null and the Stack is not empty - Throw Exception.
                 // TODO: return the last block (Global Block).
+                // TODO: if comment or blank line - continue
                 if (isMethodDeclaration(firstWord)){
                     // TODO: Create new Method Block with the properties
                     // TODO: Combine the Method Block Closure with the block's closure.
