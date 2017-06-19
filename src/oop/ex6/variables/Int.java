@@ -20,6 +20,7 @@ class Int extends Variable {
         return result;
     }
 
+
     void setType() {
         this.type = "int";
     }
