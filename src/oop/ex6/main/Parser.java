@@ -24,22 +24,27 @@ public class Parser {
         while (!blocks.isEmpty()){
             block = blocks.peek();
             firstWord = RegexWorker.getFirstWord(line);
-            if (RegexWorker.isMethodDeclaration(firstWord)){
+            if (RegexWorker.isFinal(firstWord)){    // if the line starts with final.
+                firstWord = RegexWorker.getSecondWord(line);
+            }
+            if (RegexWorker.isMethodDeclaration(firstWord)){    // if the line starts with void
                 // TODO: Create new Method Block with the properties
                 // TODO: Combine the Method Block Closure with the block's closure.
                 // TODO: Add the Method Block into the blocks Stack.
             }
-            else if ((RegexWorker.isConditionDeclaration(firstWord)) ||
+            else if ((RegexWorker.isConditionDeclaration(firstWord)) || // if starts with if or while
                     RegexWorker.isLoopDeclaration(firstWord)){
                 // TODO: Create new Condition Block with the properties.
                 // TODO: Add the Condition Block into the blocks Stack.
             }
-            else if (RegexWorker.isCallingMethod(firstWord) || RegexWorker.isCallingVar(firstWord)) {
+            else if (RegexWorker.isCallingMethod(firstWord) || RegexWorker.isCallingVar(firstWord)
+                    || RegexWorker.isReturn(line)) { // if regular code line.
                 block.addLineToCode(line);
             }
-            else if (RegexWorker.isClosingScope(line)){
+            else if (RegexWorker.isClosingScope(line)) {    // if is closing brackets
                 CodeBlock tempBlock = blocks.pop();
                 // TODO: Add Block into the new top block closure
+
             }
             else if (line == null && blocks.size() == 1){   // if has only the global block
                 globalBlock = (GlobalBlock)(blocks.pop());
@@ -48,10 +53,10 @@ public class Parser {
                 throw new CodeException("Wrong scope's brackets ");
             }
             else{
-                if (RegexWorker.isCommentOrBlank(line)){
+                if (RegexWorker.isCommentOrBlank(line)){    // if a blank line or comment
                     continue;
                 }
-                else {
+                else {  // var definition or ERROR.
                     // TODO: Define a Var using the Generator.
                     // TODO: Add the var into the closure (variables) of the block.
                 }

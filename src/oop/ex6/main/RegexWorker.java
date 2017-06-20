@@ -12,12 +12,13 @@ public class RegexWorker {
     private static final String END_WITH_EQUAL = "=$";
     private static final String FIRST_WORD =
             "(\\w*)+[(]|^\\s*(\\w*)+[(]|(\\w*)\\s[=]|^\\s*(\\w*)\\s[=]|^\\s*(\\w*)|(\\w*)";
+    private static final String SECOND_WORD = "(?:\\W+\\w+){1}(\\S+)";
     public static final String IS_ALL_WORD_REGEX = "^\\w+";
     private static final String SCOPE_CLOSING = "\\w*}|\\s*\\w*}";
     private static final String RETURN = "(return;)";
 
 
-    static String getFirstWord(String line) throws CodeException{
+    static String getFirstWord(String line){
         Pattern firstWordPattern = Pattern.compile(FIRST_WORD);
         Matcher result = firstWordPattern.matcher(line);
         if (result.find()){
@@ -58,7 +59,10 @@ public class RegexWorker {
         String cleanWord = cleanWord(startingWord);
         return cleanWord.matches(END_WITH_EQUAL);
     }
-
+    static boolean isFinal(String startingWord){
+        String cleanWord = cleanWord(startingWord);
+        return cleanWord.equals("final");
+    }
     static boolean isCommentOrBlank(String line){
         return ((line.matches(COMMENT) || line.matches(BLANK_ROW)));
     }
@@ -69,5 +73,16 @@ public class RegexWorker {
 
     static boolean isReturn(String line){
         return line.matches(RETURN);
+    }
+
+    static String getSecondWord(String line) throws CodeException {
+        Pattern firstWordPattern = Pattern.compile(SECOND_WORD);
+        Matcher result = firstWordPattern.matcher(line);
+        if (result.find()){
+            return result.group(1);
+        }
+        else{
+            throw new CodeException("After Final comes var type");
+        }
     }
 }
