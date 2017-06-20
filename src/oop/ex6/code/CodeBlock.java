@@ -33,4 +33,8 @@ public abstract class CodeBlock {
         }
     }
 
+    public void addLineToCode(String line){
+        code.add(line);
+    }
+
 }

@@ -13,6 +13,7 @@ public class Closure {
     private HashSet<Variable> variables;
     private HashSet<Method> methods;
 
+
     boolean addVariable(Variable variableToAdd){
         return variables.add(variableToAdd);
     }

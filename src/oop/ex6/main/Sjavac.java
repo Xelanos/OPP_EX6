@@ -16,7 +16,6 @@ public class Sjavac {
     public static void main(String[] args) {
         try {
             File codeFile = new File(args[0]);
-            Stack<CodeBlock> codeBlockStack = new Stack<>();
         }
         catch (CodeException e){
             System.out.println("1");
