@@ -2,9 +2,12 @@ package oop.ex6.main;
 
 import oop.ex6.code.CodeBlock;
 import oop.ex6.code.GlobalBlock;
+import oop.ex6.code.Method;
+import oop.ex6.variables.Variable;
 import oop.ex6.variables.VariableGenerator;
 
 import java.io.*;
+import java.util.ArrayList;
 import java.util.Stack;
 
 /**
@@ -18,14 +21,18 @@ public class Parser {
         Stack<CodeBlock> blocks = new Stack<>();
         blocks.push(globalBlock);
         VariableGenerator variableGenerator = VariableGenerator.getInstance();
+        ArrayList<Variable> variables;
         String line = lineReader.readLine();
         String firstWord;
         CodeBlock block;
+        boolean hasModifier;
         while (!blocks.isEmpty()){
             block = blocks.peek();
+            hasModifier = false;
             firstWord = RegexWorker.getFirstWord(line);
             if (RegexWorker.isFinal(firstWord)){    // if the line starts with final.
                 firstWord = RegexWorker.getSecondWord(line);
+                hasModifier = true;
             }
             if (RegexWorker.isMethodDeclaration(firstWord)){    // if the line starts with void
                 // TODO: Create new Method Block with the properties
@@ -57,8 +64,10 @@ public class Parser {
                     continue;
                 }
                 else {  // var definition or ERROR.
-                    // TODO: Define a Var using the Generator.
-                    // TODO: Add the var into the closure (variables) of the block.
+                    variables = variableGenerator.makeVariablesFromLine(line, hasModifier);
+                    for(Variable variable : variables){
+                        block.addVarToClosure(variable);
+                    }
                 }
             }
             line = lineReader.readLine();

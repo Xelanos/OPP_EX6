@@ -1,6 +1,10 @@
 package oop.ex6.variables;
 
+import com.sun.org.apache.bcel.internal.classfile.Code;
 import oop.ex6.main.CodeException;
+import oop.ex6.main.RegexWorker;
+
+import java.util.ArrayList;
 
 /**
  * A class for generating variables
@@ -43,5 +47,27 @@ public class VariableGenerator {
 
             default: throw new CodeException("Unsupported variable type");
         }
+    }
+
+    public ArrayList<Variable> makeVariablesFromLine(String line, boolean hasModifier) throws CodeException{
+        ArrayList<String> varsCommands = RegexWorker.getVarsCommands(RegexWorker.parametersInBrackets(line));
+        ArrayList<Variable> variables = new ArrayList<>();
+        String type, value, name, modifier;
+        Variable variable;
+        for (String command : varsCommands){
+            type = RegexWorker.getFirstWord(command);
+            name = RegexWorker.getVarName(command);
+            value = null;
+            modifier = null;
+            if (command.contains("=")){
+                value = RegexWorker.getValueAfterEqual(command);
+            }
+            if (hasModifier){
+                modifier = "final";
+            }
+            variable = makeVariable(type, value, name, modifier);
+            variables.add(variable);
+        }
+        return variables;
     }
 }

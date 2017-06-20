@@ -1,5 +1,6 @@
 package oop.ex6.main;
 
+import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -16,9 +17,12 @@ public class RegexWorker {
     public static final String IS_ALL_WORD_REGEX = "^\\w+";
     private static final String SCOPE_CLOSING = "\\w*}|\\s*\\w*}";
     private static final String RETURN = "(return;)";
+    private static final String PARAMETERS_IN_BRACKETS = "(?=\\()(.*?)(?=\\))";
+    private static final String EXPRESSION_IN_BRACKETS = "\\w[^,]+";
+    private static final String VALUE_AFTER_EQUAL = "[^=\\s]+$";
 
 
-    static String getFirstWord(String line){
+    public static String getFirstWord(String line){
         Pattern firstWordPattern = Pattern.compile(FIRST_WORD);
         Matcher result = firstWordPattern.matcher(line);
         if (result.find()){
@@ -27,6 +31,16 @@ public class RegexWorker {
         else{
             return "Maybe Blank";
         }
+    }
+
+    public static String getVarName(String varDeclaration){
+        Pattern firstWordPattern = Pattern.compile(IS_ALL_WORD_REGEX);
+        Matcher result = firstWordPattern.matcher(varDeclaration);
+        String varName = " ";
+        if (result.find()){
+            varName = result.group(1);
+        }
+        return varName;
     }
 
     private static String cleanWord(String word){
@@ -83,6 +97,38 @@ public class RegexWorker {
         }
         else{
             throw new CodeException("After Final comes var type");
+        }
+    }
+
+    public static String parametersInBrackets(String line){
+        Pattern firstWordPattern = Pattern.compile(PARAMETERS_IN_BRACKETS);
+        Matcher result = firstWordPattern.matcher(line);
+        if (result.find()){
+            return result.group(1);
+        }
+        return " ";
+    }
+
+    public static ArrayList<String> getVarsCommands(String line){
+        ArrayList<String> varsCommand = new ArrayList<>();
+        Pattern firstWordPattern = Pattern.compile(EXPRESSION_IN_BRACKETS);
+        Matcher result = firstWordPattern.matcher(line);
+        if (result.find()){
+            for (int i = 1; i < result.groupCount(); i++){
+                varsCommand.add(result.group(i));
+            }
+        }
+        return varsCommand;
+    }
+
+    public static String getValueAfterEqual(String line) throws CodeException{
+        Pattern firstWordPattern = Pattern.compile(VALUE_AFTER_EQUAL);
+        Matcher result = firstWordPattern.matcher(line);
+        if (result.find()){
+            return result.group(1);
+        }
+        else{
+            throw new CodeException("NO Value after Equal");
         }
     }
 }

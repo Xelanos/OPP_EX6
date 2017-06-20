@@ -37,4 +37,8 @@ public abstract class CodeBlock {
         code.add(line);
     }
 
+    public void addVarToClosure(Variable variable){
+        closure.addVariable(variable);
+    }
+
 }
