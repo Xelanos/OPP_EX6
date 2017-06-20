@@ -49,24 +49,18 @@ public class VariableGenerator {
         }
     }
 
-    public ArrayList<Variable> makeVariablesFromLine(String line, boolean hasModifier) throws CodeException{
+    public ArrayList<Variable> makeVariablesFromLine(String line) throws CodeException{
         ArrayList<String> varsCommands = RegexWorker.getVarsCommands(RegexWorker.parametersInBrackets(line));
         ArrayList<Variable> variables = new ArrayList<>();
         String type, value, name, modifier;
         Variable variable;
         for (String command : varsCommands){
-            type = RegexWorker.getFirstWord(command);
-            name = RegexWorker.getVarName(command);
             value = null;
-            modifier = null;
-            if (command.contains("=")){
-                value = RegexWorker.getValueAfterEqual(command);
-            }
-            if (hasModifier){
-                modifier = "final";
-            }
-            variable = makeVariable(type, value, name, modifier);
-            variables.add(variable);
+            name = null;
+            type = RegexWorker.getFirstWord(command);
+
+            name = RegexWorker.getVarName(command);
+
         }
         return variables;
     }

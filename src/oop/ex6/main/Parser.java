@@ -64,7 +64,7 @@ public class Parser {
                     continue;
                 }
                 else {  // var definition or ERROR.
-                    variables = variableGenerator.makeVariablesFromLine(line, hasModifier);
+                    variables = variableGenerator.makeVariablesFromLine(line);
                     for(Variable variable : variables){
                         block.addVarToClosure(variable);
                     }

@@ -18,11 +18,10 @@ public class RegexWorker {
     private static final String SCOPE_CLOSING = "\\w*}|\\s*\\w*}";
     private static final String RETURN = "(return;)";
     private static final String PARAMETERS_IN_BRACKETS = "(?=\\()(.*?)(?=\\))";
-    private static final String EXPRESSION_IN_BRACKETS = "\\w[^,]*";
+    private static final String EXPRESSION_IN_BRACKETS = "[a-zA-Z0-9_=\\s;]+";
     private static final String VALUE_AFTER_EQUAL = "[^=\\s]+$";
     private static final String CLEAN_ENDING = ".*(?=;)";
     private static final String CLEAN_SPACE = "\\w+";
-    private static final String VAR_NAME = "([a-zA-Z0-9_-]{1,})$|([a-zA-Z0-9_-]{1,});$";
 
 
     public static String getFirstWord(String line){
@@ -37,7 +36,7 @@ public class RegexWorker {
     }
 
     public static String getVarName(String varDeclaration){
-        Pattern firstWordPattern = Pattern.compile(VAR_NAME);
+        Pattern firstWordPattern = Pattern.compile(SECOND_WORD);
         Matcher result = firstWordPattern.matcher(varDeclaration);
         String varName = " ";
         if (result.find()){
@@ -132,7 +131,7 @@ public class RegexWorker {
         Pattern pattern = Pattern.compile(EXPRESSION_IN_BRACKETS);
         Matcher result = pattern.matcher(line);
         while (result.find()){
-            varsCommand.add(cleanWord(result.group()));
+            varsCommand.add(result.group());
         }
         return varsCommand;
     }
