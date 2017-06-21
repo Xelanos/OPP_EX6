@@ -17,6 +17,12 @@ class Boolean extends Variable {
         if ((stringToCheck.equals("false")) || (stringToCheck.equals("true"))) {
             result = true;
         }
+        else if(stringToCheck.isEmpty()){
+            result = true;
+        }
+        else {
+            result = false;
+        }
         return result;
     }
 

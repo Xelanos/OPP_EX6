@@ -56,7 +56,7 @@ public class Parser {
                  } else if (RegexWorker.isClosingScope(line)) {    // if is closing brackets
                      CodeBlock tempBlock = blocks.pop();
                      try {
-                         Method method = ((Method) (tempBlock));
+                         Method method = ((Method)(tempBlock));
                          globalBlock.addMethod(method);
                      } catch (Exception e) {
                          blocks.peek().addBlock(tempBlock);

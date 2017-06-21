@@ -16,7 +16,12 @@ class Double extends Variable {
             java.lang.Double.parseDouble(stringToCheck);
         }
         catch (NumberFormatException badNum){
-            result = false;
+            if(stringToCheck.isEmpty()){
+                result = true;
+            }
+            else {
+                result = false;
+            }
         }
         return result;
     }
