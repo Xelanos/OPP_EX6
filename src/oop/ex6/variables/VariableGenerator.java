@@ -55,12 +55,25 @@ public class VariableGenerator {
         String type, value, name, modifier;
         Variable variable;
         for (String command : varsCommands){
-            value = null;
-            name = null;
-            type = RegexWorker.getFirstWord(command);
-
-            name = RegexWorker.getVarName(command);
-
+            if(command.contains("final")){
+                modifier = "final";
+                type = RegexWorker.getSecondWord(command);
+                name = RegexWorker.getNameWithEqual(command);
+                value = RegexWorker.getValueAfterEqual(command);
+            }
+            else {
+                modifier = null;
+                if (command.contains("=")) {
+                    value = RegexWorker.getValueAfterEqual(command);
+                    name = RegexWorker.getNameWithEqual(command);
+                } else {
+                    value = "";
+                    name = RegexWorker.getVarName(command);
+                }
+                type = RegexWorker.getFirstWord(command);
+            }
+            variable = makeVariable(type, value, name, modifier);
+            variables.add(variable);
         }
         return variables;
     }

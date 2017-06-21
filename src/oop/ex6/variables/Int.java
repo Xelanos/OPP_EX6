@@ -15,7 +15,12 @@ class Int extends Variable {
             java.lang.Integer.parseInt(stringToCheck);
         }
         catch (NumberFormatException badNum){
-            result = false;
+            if(stringToCheck.isEmpty()){
+                result = true;
+            }
+            else {
+                result = false;
+            }
         }
         return result;
     }

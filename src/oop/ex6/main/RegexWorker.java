@@ -21,14 +21,17 @@ public class RegexWorker {
     private static final String EXPRESSION_IN_BRACKETS = "[a-zA-Z0-9_=\\s;]+";
     private static final String VALUE_AFTER_EQUAL = "[^=\\s]+$";
     private static final String CLEAN_ENDING = ".*(?=;)";
-    private static final String CLEAN_SPACE = "\\w+";
+    private static final String CLEAN_SPACE =
+            "\\w+\\s+\\w+\\s+=+\\s+.|\\w+\\s+\\w+\\s+\\w+\\s+=+\\s+.|\\w+\\s+\\w+\\s+\\w|\\w+\\s+\\w";
+    private static final String NAME_WITH_EQUAL = "(\\w+)\\s(?=[=])";
+    private static final String VAR_NAME = "(?:\\W+\\w+)";
 
 
     public static String getFirstWord(String line){
         Pattern firstWordPattern = Pattern.compile(FIRST_WORD);
         Matcher result = firstWordPattern.matcher(line);
         if (result.find()){
-            return cleanWord(result.group(0));
+            return cleanSpace(cleanWord(result.group(0)));
         }
         else{
             return "Maybe Blank";
@@ -36,13 +39,16 @@ public class RegexWorker {
     }
 
     public static String getVarName(String varDeclaration){
-        Pattern firstWordPattern = Pattern.compile(SECOND_WORD);
+        Pattern firstWordPattern = Pattern.compile(VAR_NAME);
         Matcher result = firstWordPattern.matcher(varDeclaration);
         String varName = " ";
         if (result.find()){
             varName = cleanWord(result.group());
+            if (result.find()){
+                varName = cleanWord(result.group());
+            }
         }
-        return varName;
+        return cleanSpace(varName);
     }
 
     private static String cleanWord(String word){
@@ -106,11 +112,11 @@ public class RegexWorker {
         return line.matches(RETURN);
     }
 
-    static String getSecondWord(String line) throws CodeException {
+    public static String getSecondWord(String line) throws CodeException {
         Pattern firstWordPattern = Pattern.compile(SECOND_WORD);
         Matcher result = firstWordPattern.matcher(line);
         if (result.find()){
-            return cleanWord(result.group(0));
+            return cleanSpace(cleanWord(result.group(0)));
         }
         else{
             throw new CodeException("After Final comes var type");
@@ -123,7 +129,9 @@ public class RegexWorker {
         if (result.find()){
             return result.group(0);
         }
-        return " ";
+        else{
+            return line;
+        }
     }
 
     public static ArrayList<String> getVarsCommands(String line){
@@ -145,6 +153,22 @@ public class RegexWorker {
         else{
             throw new CodeException("NO Value after Equal");
         }
+    }
+
+    public static String getNameWithEqual(String line) throws CodeException{
+        Pattern firstWordPattern = Pattern.compile(NAME_WITH_EQUAL);
+        Matcher result = firstWordPattern.matcher(line);
+        if (result.find()){
+            return cleanSpace(cleanWord(result.group(0)));
+        }
+        else{
+            throw new CodeException("no value when have final");
+        }
+    }
+
+    private static String cleanSpace(String word){
+        String result = word.replace(" ","");
+        return result;
     }
 
     public boolean hasEnding(String line){
