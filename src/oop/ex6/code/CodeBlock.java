@@ -1,6 +1,7 @@
 package oop.ex6.code;
 
 import oop.ex6.main.CodeException;
+import oop.ex6.main.RegexWorker;
 import oop.ex6.variables.Variable;
 import oop.ex6.variables.VariableException;
 
@@ -39,6 +40,23 @@ public abstract class CodeBlock {
 
     public void addVarToClosure(Variable variable){
         closure.addVariable(variable);
+    }
+
+    public static void checkIfNameValid(String name) throws NamingException {
+        String finalSubString = name;
+        if (Character.isDigit(name.charAt(0))) {
+            throw new NamingException(name," name can't start with a number");
+        }
+        if (name.startsWith("_")){
+            finalSubString = name.substring(1);
+            if (finalSubString.length() == 0) {
+                throw new NamingException(name," name can't be underscore");
+            }
+        }
+        if (!finalSubString.matches(RegexWorker.IS_ALL_WORD_REGEX)){
+            throw new NamingException(name,
+                    " name can only contain numbers, letters and underscore");
+        }
     }
 
 }

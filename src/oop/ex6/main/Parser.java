@@ -10,6 +10,8 @@ import oop.ex6.variables.VariableGenerator;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Stack;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by OrMiz on 12/06/2017.
@@ -33,7 +35,7 @@ public class Parser {
                 firstWord = RegexWorker.getSecondWord(line);
             }
             if (RegexWorker.isMethodDeclaration(line)){    // if the line starts with void
-                // TODO: Create new Method Block with the properties
+                Method method = makeMethod(line);
                 // TODO: Combine the Method Block Closure with the block's closure.
                 // TODO: Add the Method Block into the blocks Stack.
             }
@@ -73,7 +75,14 @@ public class Parser {
         return globalBlock;
     }
 
-
+    private Method makeMethod(String line) throws CodeException {
+        Pattern p = Pattern.compile(RegexWorker.METHOD_DECLARE);
+        Matcher matcher = p.matcher(line);
+        String modifier = matcher.group(1);
+        String name = matcher.group(2);
+        String signature = matcher.group(3);
+        return new Method(name, signature, modifier);
+    }
 
 
 }
