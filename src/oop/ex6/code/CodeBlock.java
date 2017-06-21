@@ -5,6 +5,7 @@ import oop.ex6.main.RegexWorker;
 import oop.ex6.variables.Variable;
 import oop.ex6.variables.VariableException;
 
+import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -14,6 +15,7 @@ public abstract class CodeBlock {
 
     protected Closure closure;
     protected List<String> code;
+    protected List<CodeBlock> blocks;
 
 
     abstract void blockCheck() throws CodeException;
@@ -56,6 +58,13 @@ public abstract class CodeBlock {
         if (!finalSubString.matches(RegexWorker.IS_ALL_WORD_REGEX)){
             throw new NamingException(name,
                     " name can only contain numbers, letters and underscore");
+        }
+    }
+
+    public void combineClosure(CodeBlock block){
+        HashSet<Variable> oldVars = block.closure.getVariables();
+        for (Variable var : oldVars){
+            this.closure.addVariable(var);
         }
     }
 

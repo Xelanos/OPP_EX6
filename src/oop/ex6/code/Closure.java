@@ -40,4 +40,8 @@ public class Closure {
         throw new CodeException("Unknown variable: "+variableName);
     }
 
+    public HashSet<Variable> getVariables(){
+        return variables;
+    }
+
 }

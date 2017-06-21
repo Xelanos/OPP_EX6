@@ -36,8 +36,8 @@ public class Parser {
             }
             if (RegexWorker.isMethodDeclaration(line)){    // if the line starts with void
                 Method method = makeMethod(line);
-                // TODO: Combine the Method Block Closure with the block's closure.
-                // TODO: Add the Method Block into the blocks Stack.
+                method.combineClosure(block);
+                blocks.push(method);
             }
             else if ((RegexWorker.isConditionDeclaration(firstWord)) || // if starts with if or while
                     RegexWorker.isLoopDeclaration(firstWord)){
