@@ -23,7 +23,6 @@ public class Sjavac {
             System.err.println(e.getMessage());
             return;
 
-        }
-        System.out.println("0");
+        }System.out.println("0");
     }
 }

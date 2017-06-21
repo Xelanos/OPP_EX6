@@ -25,6 +25,8 @@ public class RegexWorker {
             "\\w+\\s+\\w+\\s+=+\\s+.|\\w+\\s+\\w+\\s+\\w+\\s+=+\\s+.|\\w+\\s+\\w+\\s+\\w|\\w+\\s+\\w";
     private static final String NAME_WITH_EQUAL = "(\\w+)\\s(?=[=])";
     private static final String VAR_NAME = "(?:\\W+\\w+)";
+    public static final  String METHOD_DECLARE = "[ \\t]*(\\w+)[ \\t]+(\\w+)[ \\t]+(?=\\()" +
+            "(.*?)(?<=\\))[ \\t]*[$\\{][ \\t]*";
 
 
     public static String getFirstWord(String line){
@@ -72,9 +74,8 @@ public class RegexWorker {
 
     }
 
-    static boolean isMethodDeclaration(String startingWord){
-        String cleanWord = cleanWord(startingWord);
-        return cleanWord.equals("void");
+    static boolean isMethodDeclaration(String line){
+        return line.matches(METHOD_DECLARE);
     }
 
     static boolean isConditionDeclaration(String startingWord){

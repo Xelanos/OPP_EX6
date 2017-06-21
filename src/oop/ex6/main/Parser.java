@@ -34,7 +34,7 @@ public class Parser {
                 firstWord = RegexWorker.getSecondWord(line);
                 hasModifier = true;
             }
-            if (RegexWorker.isMethodDeclaration(firstWord)){    // if the line starts with void
+            if (RegexWorker.isMethodDeclaration(line)){    // if the line starts with void
                 // TODO: Create new Method Block with the properties
                 // TODO: Combine the Method Block Closure with the block's closure.
                 // TODO: Add the Method Block into the blocks Stack.
