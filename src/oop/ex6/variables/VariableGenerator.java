@@ -55,6 +55,7 @@ public class VariableGenerator {
         String type, value, name, modifier;
         Variable variable;
         for (String command : varsCommands){
+            command = command.trim();
             if(command.contains("final")){
                 modifier = "final";
                 type = RegexWorker.getSecondWord(command);
