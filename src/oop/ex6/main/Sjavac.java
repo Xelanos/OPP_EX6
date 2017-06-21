@@ -9,20 +9,20 @@ import java.io.IOException;
  */
 public class Sjavac {
     public static void main(String[] args) {
-        try {
-
-        }
-        catch (CodeException e){
-            System.out.println("1");
-            System.err.println(e.getMessage());
-            return;
-
-        }
-        catch (IOException e){
-            System.out.println("2");
-            System.err.println(e.getMessage());
-            return;
-
-        }System.out.println("0");
+//        try {
+//
+//        }
+//        catch (CodeException e){
+//            System.out.println("1");
+//            System.err.println(e.getMessage());
+//            return;
+//
+//        }
+//        catch (IOException e){
+//            System.out.println("2");
+//            System.err.println(e.getMessage());
+//            return;
+//
+//        }System.out.println("0");
     }
 }

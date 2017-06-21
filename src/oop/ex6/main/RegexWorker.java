@@ -26,7 +26,7 @@ public class RegexWorker {
     private static final String NAME_WITH_EQUAL = "(\\w+)\\s(?=[=])";
     private static final String VAR_NAME = "(?:\\W+\\w+)";
     public static final  String METHOD_DECLARE = "[ \\t]*(\\w+)[ \\t]+(\\w+)[ \\t]+(?=\\()" +
-            "(.*?)(?<=\\))[ \\t]*[$\\{][ \\t]*";
+            "(.*?)(?<=\\))[ \\t]*[${][ \\t]*";
 
 
     public static String getFirstWord(String line){

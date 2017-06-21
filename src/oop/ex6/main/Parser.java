@@ -76,13 +76,15 @@ public class Parser {
     }
 
     private Method makeMethod(String line) throws CodeException {
+        String modifier = null, name = null, signature = null;
         Pattern p = Pattern.compile(RegexWorker.METHOD_DECLARE);
         Matcher matcher = p.matcher(line);
-        String modifier = matcher.group(1);
-        String name = matcher.group(2);
-        String signature = matcher.group(3);
+        while (matcher.find()) {
+            modifier = matcher.group(1);
+            name = matcher.group(2);
+            signature = matcher.group(3);
+
+        }
         return new Method(name, signature, modifier);
     }
-
-
 }
