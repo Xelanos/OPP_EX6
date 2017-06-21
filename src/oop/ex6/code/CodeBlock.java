@@ -74,8 +74,15 @@ public abstract class CodeBlock {
         blocks.add(block);
     }
 
-    public void addMethod(Method method){
-        closure.addMethod(method);
+    public boolean addMethod(Method method){
+        if(closure.containsMethod(method.getName()))
+        {
+            return false;
+        }
+        else {
+            closure.addMethod(method);
+            return true;
+        }
     }
 
 }

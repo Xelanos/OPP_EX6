@@ -1,6 +1,5 @@
 package oop.ex6.variables;
 
-import com.sun.org.apache.bcel.internal.classfile.Code;
 import oop.ex6.main.CodeException;
 import oop.ex6.main.RegexWorker;
 

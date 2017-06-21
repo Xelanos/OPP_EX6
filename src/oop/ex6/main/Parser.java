@@ -1,7 +1,6 @@
 package oop.ex6.main;
 
 import oop.ex6.code.CodeBlock;
-import oop.ex6.code.ConditionBlock;
 import oop.ex6.code.GlobalBlock;
 import oop.ex6.code.Method;
 import oop.ex6.variables.Variable;
@@ -57,8 +56,14 @@ public class Parser {
                      CodeBlock tempBlock = blocks.pop();
                      try {
                          Method method = ((Method)(tempBlock));
-                         globalBlock.addMethod(method);
-                     } catch (Exception e) {
+                         if(!globalBlock.addMethod(method)){
+                             throw new CodeException("Methods with same name");
+                         }
+                     }
+                     catch (CodeException codeException){
+                         throw codeException;
+                     }
+                     catch (Exception e) {
                          blocks.peek().addBlock(tempBlock);
                      }
                  } else {

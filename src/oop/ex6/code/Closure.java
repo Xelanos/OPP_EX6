@@ -35,6 +35,14 @@ public class Closure {
         throw new CodeException("Unknown method: "+methodName);
     }
 
+    boolean containsMethod(String methodName){
+        for (Method method : methods){
+            if (method.getName().equals(methodName)){
+                return true;
+            }
+        }
+        return false;
+    }
     Variable getVariable(String variableName) throws CodeException {
         for (Variable variable : variables){
             if (variable.getName().equals(variableName)){

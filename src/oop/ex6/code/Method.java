@@ -6,6 +6,7 @@ import oop.ex6.variables.Variable;
 import oop.ex6.variables.VariableGenerator;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.Objects;
 
 /**
@@ -27,6 +28,9 @@ public class Method extends CodeBlock {
         this.modifier = modifier;
         VariableGenerator generator = VariableGenerator.getInstance();
         callVariables = generator.makeVariablesFromLine(signature);
+        closure = new Closure();
+        code = new LinkedList<>();
+        blocks = new LinkedList<>();
 
     }
 

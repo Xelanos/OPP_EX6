@@ -13,7 +13,6 @@ public class Sjavac {
         try {
             File file = new File(args[0]);
             GlobalBlock globalBlock = Parser.processesLines(file);
-            System.out.println("YYAYYY");
         }
         catch (CodeException e){
             System.out.println("1");
