@@ -1,28 +1,31 @@
 package oop.ex6.main;
 
 
+import oop.ex6.code.GlobalBlock;
+
+import java.io.File;
 import java.io.IOException;
 
 
-/**
- * Created by or323 on 12/06/2017.
- */
+
 public class Sjavac {
     public static void main(String[] args) {
-//        try {
-//
-//        }
-//        catch (CodeException e){
-//            System.out.println("1");
-//            System.err.println(e.getMessage());
-//            return;
-//
-//        }
-//        catch (IOException e){
-//            System.out.println("2");
-//            System.err.println(e.getMessage());
-//            return;
-//
-//        }System.out.println("0");
+        try {
+            File file = new File(args[0]);
+            GlobalBlock globalBlock = Parser.processesLines(file);
+            System.out.println("YYAYYY");
+        }
+        catch (CodeException e){
+            System.out.println("1");
+           System.err.println(e.getMessage());
+           return;
+
+       }
+        catch (IOException e){
+            System.out.println("2");
+           System.err.println(e.getMessage());
+          return;
+
+       }System.out.println("0");
     }
 }

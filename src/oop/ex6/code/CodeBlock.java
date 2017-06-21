@@ -6,17 +6,15 @@ import oop.ex6.variables.Variable;
 import oop.ex6.variables.VariableException;
 
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 
-/**
- * Created by OrMiz on 12/06/2017.
- */
+
 public abstract class CodeBlock {
 
     protected Closure closure;
-    protected List<String> code;
-    protected List<CodeBlock> blocks;
-
+    protected LinkedList<String> code;
+    protected LinkedList<CodeBlock> blocks;
 
     abstract void blockCheck() throws CodeException;
 
@@ -63,9 +61,21 @@ public abstract class CodeBlock {
 
     public void combineClosure(CodeBlock block){
         HashSet<Variable> oldVars = block.closure.getVariables();
+        HashSet<Method> oldMethods = block.closure.getMethods();
         for (Variable var : oldVars){
             this.closure.addVariable(var);
         }
+        for (Method method : oldMethods){
+            this.closure.addMethod(method);
+        }
+    }
+
+    public void addBlock(CodeBlock block){
+        blocks.add(block);
+    }
+
+    public void addMethod(Method method){
+        closure.addMethod(method);
     }
 
 }
