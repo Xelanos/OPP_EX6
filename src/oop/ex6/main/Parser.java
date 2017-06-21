@@ -1,6 +1,7 @@
 package oop.ex6.main;
 
 import oop.ex6.code.CodeBlock;
+import oop.ex6.code.ConditionBlock;
 import oop.ex6.code.GlobalBlock;
 import oop.ex6.code.Method;
 import oop.ex6.variables.Variable;
@@ -25,14 +26,11 @@ public class Parser {
         String line = lineReader.readLine();
         String firstWord;
         CodeBlock block;
-        boolean hasModifier;
         while (!blocks.isEmpty()){
             block = blocks.peek();
-            hasModifier = false;
             firstWord = RegexWorker.getFirstWord(line);
             if (RegexWorker.isFinal(firstWord)){    // if the line starts with final.
                 firstWord = RegexWorker.getSecondWord(line);
-                hasModifier = true;
             }
             if (RegexWorker.isMethodDeclaration(firstWord)){    // if the line starts with void
                 // TODO: Create new Method Block with the properties
