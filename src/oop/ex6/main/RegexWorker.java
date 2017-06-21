@@ -9,7 +9,7 @@ public class RegexWorker {
 
     private static final String COMMENT = "^[/]+[/]";
     private static final String BLANK_ROW = "^\\s*$";
-    private static final String END_WITH_OPEN_BARKETS = "[(]$";
+    private static final String END_WITH_OPEN_BARKETS = "(.*?)(?<=\\))";
     private static final String END_WITH_EQUAL = "=$";
     private static final String FIRST_WORD =
             "(\\w*)+[(]|^\\s*(\\w*)+[(]|(\\w*)\\s[=]|^\\s*(\\w*)\\s[=]|^\\s*(\\w*)|(\\w*)";
@@ -88,8 +88,9 @@ public class RegexWorker {
     }
 
     static boolean isCallingMethod(String startingWord){
-        String cleanWord = cleanWord(startingWord);
-        return cleanWord.matches(END_WITH_OPEN_BARKETS);
+        Pattern cleanPattern = Pattern.compile(END_WITH_OPEN_BARKETS);
+        Matcher result = cleanPattern.matcher(startingWord);
+        return result.find();
     }
 
     static boolean isCallingVar(String startingWord){
