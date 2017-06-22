@@ -1,6 +1,7 @@
 package oop.ex6.variables;
 
 import oop.ex6.code.CodeBlock;
+import oop.ex6.code.GlobalBlock;
 import oop.ex6.main.CodeException;
 import oop.ex6.main.RegexWorker;
 
@@ -77,9 +78,11 @@ public class VariableGenerator {
                     name = RegexWorker.getVarName(command);
                 }
                 type = RegexWorker.getFirstWord(command);
-                if (name.isEmpty()){
+                if (name.isEmpty() || name.contains(type) || type.contains(name)){
                     if(!prevType.isEmpty()) {
-                        name = type;
+                        if (!type.contains(name) || name.isEmpty()) {
+                            name = type;
+                        }
                         type = prevType;
                     }
                 }
@@ -98,9 +101,23 @@ public class VariableGenerator {
                 }
             }
             variable = makeVariable(type, value, name, modifier);
-            variables.add(variable);
+            if(isVarExists(variables, variable)){
+                throw new CodeException("variable "+variable.getName()+" is already exists in the scope");
+            }
+            else {
+                variables.add(variable);
+            }
             prevType = type;
         }
         return variables;
+    }
+
+    boolean isVarExists(ArrayList<Variable> variables, Variable variable){
+        for (Variable var : variables){
+            if (var.getName().equals(variable.getName())){
+                return true;
+            }
+        }
+        return false;
     }
 }
