@@ -54,6 +54,7 @@ public class VariableGenerator {
         ArrayList<Variable> variables = new ArrayList<>();
         String type, value, name, modifier;
         Variable variable;
+        String prevType = "";
         for (String command : varsCommands){
             command = command.trim();
             if(command.contains("final")){
@@ -76,6 +77,12 @@ public class VariableGenerator {
                     name = RegexWorker.getVarName(command);
                 }
                 type = RegexWorker.getFirstWord(command);
+                if (name.isEmpty()){
+                    if(!prevType.isEmpty()) {
+                        name = type;
+                        type = prevType;
+                    }
+                }
             }
             if (block != null){
                 if (RegexWorker.isVariableName(value)){
@@ -92,6 +99,7 @@ public class VariableGenerator {
             }
             variable = makeVariable(type, value, name, modifier);
             variables.add(variable);
+            prevType = type;
         }
         return variables;
     }

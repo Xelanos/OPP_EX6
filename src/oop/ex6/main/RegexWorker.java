@@ -7,7 +7,7 @@ import java.util.regex.Pattern;
 
 public class RegexWorker {
 
-    private static final String COMMENT = "^[/]+[/]";
+    private static final String COMMENT = "[\\/]+";
     private static final String BLANK_ROW = "^\\s*$";
     private static final String END_WITH_OPEN_BARKETS = "(.*?)(?<=\\))";
     private static final String END_WITH_EQUAL = "=$";
@@ -18,7 +18,7 @@ public class RegexWorker {
     private static final String SCOPE_CLOSING = "\\w*}|\\s*\\w*}";
     private static final String RETURN = "(return;)";
     private static final String PARAMETERS_IN_BRACKETS = "(?=\\()(.*?)(?=\\))";
-    private static final String EXPRESSION_IN_BRACKETS = "[a-zA-Z0-9_=\\-\\s.\"\'[^\\w\\*]]+";
+    private static final String EXPRESSION_IN_BRACKETS = "[a-zA-Z0-9_=\\-\\s.\"\'\\%]+";
     private static final String VALUE_AFTER_EQUAL = "[^=\\s]+$";
     private static final String CLEAN_ENDING = ".*(?=;)";
     private static final String CLEAN_SPACE =
@@ -106,7 +106,20 @@ public class RegexWorker {
         return cleanWord.equals("final");
     }
     static boolean isCommentOrBlank(String line){
-        return ((line.matches(COMMENT) || line.matches(BLANK_ROW)));
+        boolean result = false;
+        Pattern pattern = Pattern.compile(COMMENT);
+        Matcher matcher = pattern.matcher(line);
+        if (matcher.find()){
+            result = true;
+        }
+        else{
+            pattern = Pattern.compile(BLANK_ROW);
+            matcher = pattern.matcher(line);
+            if(matcher.find()){
+                result = true;
+            }
+        }
+        return result;
     }
 
     static boolean isClosingScope(String line){
@@ -182,6 +195,6 @@ public class RegexWorker {
 
 
     public static boolean isVariableName(String value){
-        return value.matches(VARIABLE_NAME);
+       return value.matches(VARIABLE_NAME) && !value.equals("true") && !value.equals("false");
     }
 }
