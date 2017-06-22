@@ -80,7 +80,7 @@ public class VariableGenerator {
                 if (RegexWorker.isVariableName(value)){
                     Variable variableInClosure = block.getVariable(value);
                     if (type.equals(variableInClosure.getType())){
-                        value = null;
+                        value = variableInClosure.getValue();
                     } else throw new VariableException(name, variableInClosure.getName());
                 }
             }

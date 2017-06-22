@@ -11,6 +11,7 @@ public abstract class Variable {
     protected String type;
     protected String name;
     protected String modifier;
+    protected String value;
 
 
     Variable(String value,String name, String modifier) throws VariableException, NamingException{
@@ -19,6 +20,7 @@ public abstract class Variable {
             CodeBlock.checkIfNameValid(name);
             this.name = name;
             this.modifier = modifier;
+            this.value = value;
         } else throw new VariableException(this.type, value);
     }
 
@@ -34,4 +36,7 @@ public abstract class Variable {
         return type;
     }
 
+    public String getValue() {
+        return value;
+    }
 }
