@@ -16,7 +16,7 @@ public class RegexWorker {
     private static final String SECOND_WORD = "(?:\\W+\\w+){1}(\\S+)";
     public static final String IS_ALL_WORD_REGEX = "^\\w+";
     private static final String SCOPE_CLOSING = "\\w*}|\\s*\\w*}";
-    private static final String RETURN = "([\\s\\t]return;)";
+    private static final String RETURN = "([\\s\\t]return;)|(return;)";
     private static final String PARAMETERS_IN_BRACKETS = "(?=\\()(.*?)(?=\\))";
     private static final String EXPRESSION_IN_BRACKETS = "[a-zA-Z0-9_=\\-\\s.\"\'\\%]+";
     private static final String VALUE_AFTER_EQUAL = "[^=\\s]+$";
@@ -127,7 +127,13 @@ public class RegexWorker {
     }
 
     static boolean isReturn(String line){
-        return line.matches(RETURN);
+        boolean result = false;
+        Pattern pattern = Pattern.compile(RETURN);
+        Matcher matcher = pattern.matcher(line);
+        if (matcher.find()){
+            result = true;
+        }
+        return result;
     }
 
     public static String getSecondWord(String line) throws CodeException {
