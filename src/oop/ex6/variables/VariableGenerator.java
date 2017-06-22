@@ -70,6 +70,7 @@ public class VariableGenerator {
                 if (command.contains("=")) {
                     value = RegexWorker.getValueAfterEqual(command);
                     name = RegexWorker.getNameWithEqual(command);
+
                 } else {
                     value = "";
                     name = RegexWorker.getVarName(command);
