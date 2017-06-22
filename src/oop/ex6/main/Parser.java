@@ -10,6 +10,7 @@ import oop.ex6.variables.VariableGenerator;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.EmptyStackException;
+import java.util.HashSet;
 import java.util.Stack;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -49,7 +50,7 @@ public class Parser {
                     } else if ((RegexWorker.isConditionDeclaration(firstWord)) || // if starts with if or while
                             RegexWorker.isLoopDeclaration(firstWord)) {
                         // JUST FOR THE TEST
-                        ConditionBlock conditionBlock = new ConditionBlock();
+                        ConditionBlock conditionBlock = makeConditionBlock(line, blocks.peek().getVars());
                         blocks.add(conditionBlock);
                     } else if (RegexWorker.isCallingMethod(line) || RegexWorker.isCallingVar(firstWord)
                             || RegexWorker.isReturn(line)) { // if regular code line.
@@ -97,5 +98,15 @@ public class Parser {
             signature = matcher.group(3);
         }
         return new Method(name, signature, modifier);
+    }
+
+    private static ConditionBlock makeConditionBlock(String line, HashSet<Variable> knownVars) throws CodeException{
+        String conditionContent = null;
+        Pattern p = Pattern.compile((RegexWorker.CONDITION_DECLARE));
+        Matcher matcher = p.matcher(line);
+        if (matcher.find()){
+            conditionContent = matcher.group(2);
+        }
+        return new ConditionBlock(conditionContent, knownVars);
     }
 }

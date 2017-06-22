@@ -52,6 +52,14 @@ public class Closure {
         throw new CodeException("Unknown variable: "+variableName);
     }
 
+    boolean containVar(String varName){
+        for (Variable variable : variables){
+            if (variable.getName().equals(varName)){
+                return true;
+            }
+        }
+        return false;
+    }
     public HashSet<Variable> getVariables(){
         return variables;
     }

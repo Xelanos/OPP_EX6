@@ -85,4 +85,12 @@ public abstract class CodeBlock {
         }
     }
 
+    public boolean containVar(String varName){
+        return closure.containVar(varName);
+    }
+
+    public HashSet<Variable> getVars(){
+        return this.closure.getVariables();
+    }
+
 }

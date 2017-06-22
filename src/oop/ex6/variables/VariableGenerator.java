@@ -61,6 +61,9 @@ public class VariableGenerator {
                 name = RegexWorker.getNameWithEqual(command);
                 value = RegexWorker.getValueAfterEqual(command);
             }
+            else if(command.isEmpty()){
+                continue;
+            }
             else {
                 modifier = null;
                 if (command.contains("=")) {

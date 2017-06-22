@@ -1,6 +1,7 @@
 package oop.ex6.variables;
 
 
+import oop.ex6.code.ConditionBlock;
 import oop.ex6.main.CodeException;
 
 /**
@@ -15,6 +16,9 @@ class Boolean extends Variable {
     public boolean checkIfValueValid(String stringToCheck) {
         boolean result = false;
         if ((stringToCheck.equals("false")) || (stringToCheck.equals("true"))) {
+            result = true;
+        }
+        else if(ConditionBlock.isNum(stringToCheck)){
             result = true;
         }
         else if(stringToCheck.isEmpty()){
