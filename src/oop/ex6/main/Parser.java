@@ -72,7 +72,7 @@ public class Parser {
                             line = lineReader.readLine();
                             continue;
                         } else {  // var definition or ERROR.
-                            variables = variableGenerator.makeVariablesFromLine(line);
+                            variables = variableGenerator.makeVariablesFromLine(line, block);
                             for (Variable variable : variables) {
                                 block.addVarToClosure(variable);
                             }

@@ -23,11 +23,11 @@ public class Method extends CodeBlock {
         CodeBlock.checkIfNameValid(name);
         this.name = name;
         if (!Objects.equals(modifier, "void")){
-            throw new CodeException(name+" :s-Java can only support void methods");
+            throw new CodeException("Problem in "+name+" :s-Java can only support void methods");
         }
         this.modifier = modifier;
         VariableGenerator generator = VariableGenerator.getInstance();
-        callVariables = generator.makeVariablesFromLine(signature);
+        callVariables = generator.makeVariablesFromLine(signature, null);
         closure = new Closure();
         code = new LinkedList<>();
         blocks = new LinkedList<>();

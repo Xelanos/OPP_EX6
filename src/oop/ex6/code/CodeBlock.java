@@ -43,19 +43,17 @@ public abstract class CodeBlock {
     }
 
     public static void checkIfNameValid(String name) throws NamingException {
-        String finalSubString = name;
         if (Character.isDigit(name.charAt(0))) {
             throw new NamingException(name," name can't start with a number");
         }
         if (name.startsWith("_")){
-            finalSubString = name.substring(1);
-            if (finalSubString.length() == 0) {
-                throw new NamingException(name," name can't be underscore");
+            if (name.length() == 1) {
+                throw new NamingException(name," name can't be only underscore");
             }
         }
-        if (!finalSubString.matches(RegexWorker.IS_ALL_WORD_REGEX)){
+        if (!name.matches(RegexWorker.IS_ALL_WORD_REGEX)){
             throw new NamingException(name,
-                    " name can only contain numbers, letters and underscore");
+                    " name can only contain numbers, letters and underscore and must not start with number");
         }
     }
 
@@ -93,4 +91,7 @@ public abstract class CodeBlock {
         return this.closure.getVariables();
     }
 
+    public Variable getVariable(String variableName) throws CodeException {
+        return closure.getVariable(variableName);
+    }
 }

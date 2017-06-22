@@ -1,5 +1,6 @@
 package oop.ex6.variables;
 
+import oop.ex6.code.CodeBlock;
 import oop.ex6.main.CodeException;
 import oop.ex6.main.RegexWorker;
 
@@ -44,11 +45,11 @@ public class VariableGenerator {
 
             case "String": return new VarString(varValue,varName,varModifier);
 
-            default: throw new CodeException("Unsupported variable type");
+            default: throw new CodeException("Unsupported variable type : " +varType);
         }
     }
 
-    public ArrayList<Variable> makeVariablesFromLine(String line) throws CodeException{
+    public ArrayList<Variable> makeVariablesFromLine(String line, CodeBlock block) throws CodeException{
         ArrayList<String> varsCommands = RegexWorker.getVarsCommands(RegexWorker.parametersInBrackets(line));
         ArrayList<Variable> variables = new ArrayList<>();
         String type, value, name, modifier;
@@ -74,6 +75,14 @@ public class VariableGenerator {
                     name = RegexWorker.getVarName(command);
                 }
                 type = RegexWorker.getFirstWord(command);
+            }
+            if (block != null){
+                if (RegexWorker.isVariableName(value)){
+                    Variable variableInClosure = block.getVariable(value);
+                    if (type.equals(variableInClosure.getType())){
+                        value = null;
+                    } else throw new VariableException(name, variableInClosure.getName());
+                }
             }
             variable = makeVariable(type, value, name, modifier);
             variables.add(variable);

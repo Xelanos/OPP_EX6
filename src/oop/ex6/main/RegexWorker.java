@@ -28,6 +28,7 @@ public class RegexWorker {
     public static final  String METHOD_DECLARE = "[\\s\\t]*(\\w+)[\\s\\t]+(\\w+)(.*?)(?<=\\))[\\s\\t]*[${][\\s\\t]*";
     public static final String CONDITION_DECLARE = "[\\s\\t]*(\\w+)[\\s\\t]+(.*?)(?<=\\))";
     public static final String CONDITION_CONTENT = "([\\-]\\d+[\\.]+\\d+)|(\\w+)";
+    public static final String VARIABLE_NAME = "^[a-zA-Z_][a-zA-Z_$0-9]*$";
 
 
     public static String getFirstWord(String line){
@@ -94,6 +95,7 @@ public class RegexWorker {
         Matcher result = cleanPattern.matcher(startingWord);
         return result.find();
     }
+
 
     static boolean isCallingVar(String startingWord){
         String cleanWord = cleanWord(startingWord);
@@ -176,5 +178,10 @@ public class RegexWorker {
 
     public boolean hasEnding(String line){
         return false;
+    }
+
+
+    public static boolean isVariableName(String value){
+        return value.matches(VARIABLE_NAME);
     }
 }
