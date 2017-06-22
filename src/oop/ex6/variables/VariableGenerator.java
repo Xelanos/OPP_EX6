@@ -50,7 +50,7 @@ public class VariableGenerator {
         }
     }
 
-    public ArrayList<Variable> makeVariablesFromLine(String line, CodeBlock block) throws CodeException{
+    public ArrayList<Variable> makeVariablesFromLine(String line, CodeBlock block, GlobalBlock globalBlock) throws CodeException{
         ArrayList<String> varsCommands = RegexWorker.getVarsCommands(RegexWorker.parametersInBrackets(line));
         ArrayList<Variable> variables = new ArrayList<>();
         String type, value, name, modifier;
@@ -89,15 +89,17 @@ public class VariableGenerator {
             }
             if (block != null){
                 if (RegexWorker.isVariableName(value)){
-                    Variable variableInClosure = block.getVariable(value);
-                    if (type.equals(variableInClosure.getType())){
-                        String variableInClosureValue = variableInClosure.getValue();
-                        if (variableInClosureValue.equals("")){
-                            throw new VariableException("Referencing variable "+variableInClosure.getName()+
-                                    " without assignment");
-                        }
-                        value = variableInClosureValue;
-                    } else throw new VariableException(name, variableInClosure.getName());
+                    Variable variableInClosure = block.getVariable(value, globalBlock);
+                    if(variableInClosure != null) {
+                        if (type.equals(variableInClosure.getType())) {
+                            String variableInClosureValue = variableInClosure.getValue();
+                            if (variableInClosureValue.equals("")) {
+                                throw new VariableException("Referencing variable " + variableInClosure.getName() +
+                                        " without assignment");
+                            }
+                            value = variableInClosureValue;
+                        } else throw new VariableException(name, variableInClosure.getName());
+                    }
                 }
             }
             variable = makeVariable(type, value, name, modifier);

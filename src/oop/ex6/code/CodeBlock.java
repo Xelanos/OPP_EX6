@@ -91,7 +91,7 @@ public abstract class CodeBlock {
         return this.closure.getVariables();
     }
 
-    public Variable getVariable(String variableName) throws CodeException {
-        return closure.getVariable(variableName);
+    public Variable getVariable(String variableName, GlobalBlock block) throws CodeException {
+        return closure.getVariable(variableName, block, this);
     }
 }

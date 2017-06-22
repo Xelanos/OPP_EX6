@@ -1,6 +1,7 @@
 package oop.ex6.variables;
 
 import oop.ex6.main.CodeException;
+import oop.ex6.main.RegexWorker;
 
 /**
  * Created by OrMiz on 12/06/2017.
@@ -16,6 +17,9 @@ class Int extends Variable {
         }
         catch (NumberFormatException badNum){
             if(stringToCheck.isEmpty()){
+                result = true;
+            }
+            else if(RegexWorker.isVariableName(stringToCheck)){
                 result = true;
             }
             else {

@@ -43,13 +43,19 @@ public class Closure {
         }
         return false;
     }
-    Variable getVariable(String variableName) throws CodeException {
+    Variable getVariable(String variableName, GlobalBlock block, CodeBlock codeBlock) throws CodeException {
         for (Variable variable : variables){
             if (variable.getName().equals(variableName)){
                 return variable;
             }
         }
-        throw new CodeException("Unknown variable: "+variableName);
+        if (codeBlock instanceof Method) {
+            block.addToUnknown(variableName);
+            return null;
+        }
+        else{
+            throw new CodeException("Unknown variable: "+ variableName);
+        }
     }
 
     boolean containVar(String varName){

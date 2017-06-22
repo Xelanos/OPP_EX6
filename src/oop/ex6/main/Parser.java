@@ -72,7 +72,7 @@ public class Parser {
                             line = lineReader.readLine();
                             continue;
                         } else {  // var definition or ERROR.
-                            variables = variableGenerator.makeVariablesFromLine(line, block);
+                            variables = variableGenerator.makeVariablesFromLine(line, block, globalBlock);
                             for (Variable variable : variables) {
                                 block.addVarToClosure(variable);
                             }
@@ -81,6 +81,7 @@ public class Parser {
                     line = lineReader.readLine();
                 }
             }
+            checkUnknown(globalBlock);
             return globalBlock;
         }
         catch (EmptyStackException e){
@@ -108,5 +109,13 @@ public class Parser {
             conditionContent = matcher.group(2);
         }
         return new ConditionBlock(conditionContent, knownVars);
+    }
+
+    private static void checkUnknown(GlobalBlock globalBlock) throws CodeException{
+        for (String varName : globalBlock.getUnknownVars()){
+            if(globalBlock.getVariable(varName, globalBlock) == null){
+                throw new CodeException("Unknown variable: "+varName);
+            }
+        }
     }
 }
