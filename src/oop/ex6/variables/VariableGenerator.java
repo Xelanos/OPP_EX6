@@ -81,7 +81,12 @@ public class VariableGenerator {
                 if (RegexWorker.isVariableName(value)){
                     Variable variableInClosure = block.getVariable(value);
                     if (type.equals(variableInClosure.getType())){
-                        value = variableInClosure.getValue();
+                        String variableInClosureValue = variableInClosure.getValue();
+                        if (variableInClosureValue.equals("")){
+                            throw new VariableException("Referencing variable "+variableInClosure.getName()+
+                                    " without assignment");
+                        }
+                        value = variableInClosureValue;
                     } else throw new VariableException(name, variableInClosure.getName());
                 }
             }
