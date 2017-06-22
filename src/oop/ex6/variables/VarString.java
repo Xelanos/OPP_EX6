@@ -15,6 +15,9 @@ class VarString extends Variable {
         if (stringToCheck.startsWith("\"") && stringToCheck.endsWith("\"")){
             result = true;
         }
+        else if(stringToCheck.isEmpty()){
+            result = true;
+        }
         return result;
     }
 

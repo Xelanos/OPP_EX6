@@ -17,6 +17,9 @@ public class Char extends Variable {
                 result = true;
             }
         }
+        else if(stringToCheck.isEmpty()){
+            result = true;
+        }
         return result;
     }
 
