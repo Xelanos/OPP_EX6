@@ -107,12 +107,7 @@ public class VariableGenerator {
                     }
                 }
                 variable = makeVariable(type, value, name, modifier);
-                if(block instanceof Method){
-                    for (Variable tempVar : ((Method) block).getCallVariables()){
-                        variables.add(tempVar);
-                    }
-                }
-                if (isVarExists(variables, variable)) {
+                if (isVarExists(variables, variable, block)) {
                     throw new CodeException("variable " + variable.getName() + " is already exists in the scope");
                 } else {
                     variables.add(variable);
@@ -126,10 +121,17 @@ public class VariableGenerator {
         }
     }
 
-    boolean isVarExists(ArrayList<Variable> variables, Variable variable){
+    boolean isVarExists(ArrayList<Variable> variables, Variable variable, CodeBlock block){
         for (Variable var : variables){
             if (var.getName().equals(variable.getName())){
                 return true;
+            }
+        }
+        if (block instanceof Method){
+            for (Variable var : ((Method) block).getCallVariables()){
+                if (var.getName().equals(variable.getName())){
+                    return true;
+                }
             }
         }
         return false;
