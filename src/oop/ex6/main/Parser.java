@@ -107,6 +107,9 @@ public class Parser {
         if (matcher.find()){
             conditionContent = matcher.group(2);
         }
+        if (conditionContent.equals("()")){
+            throw new CodeException("Condition can't be empty");
+        }
         return new ConditionBlock(conditionContent, knownVars);
     }
 
