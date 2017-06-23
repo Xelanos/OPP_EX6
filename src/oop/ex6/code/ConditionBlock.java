@@ -23,7 +23,13 @@ public class ConditionBlock extends CodeBlock {
         while (matcher.find()){
             if (isNum(matcher.group())){
             }
-            else if(matcher.group().equals("true") || matcher.group().equals("false")){
+            else if((matcher.group().equals("true") || matcher.group().equals("false")
+                    || RegexWorker.isVariableName(matcher.group()))){
+                if(RegexWorker.isVariableName(matcher.group())){
+                    if(!containVar(matcher.group())){
+                        throw new CodeException("Illegal condition ");
+                    }
+                }
             }
             else {
                 if (this.containVar(matcher.group())){
