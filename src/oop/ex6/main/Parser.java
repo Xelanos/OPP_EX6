@@ -44,7 +44,7 @@ public class Parser {
                         firstWord = RegexWorker.getSecondWord(line);
                     }
                     if (RegexWorker.isMethodDeclaration(line)) {    // if the line starts with void
-                        Method method = makeMethod(line);
+                        Method method = makeMethod(line, block);
                         method.combineClosure(block);
                         blocks.push(method);
                     } else if ((RegexWorker.isConditionDeclaration(firstWord)) || // if starts with if or while
@@ -88,13 +88,14 @@ public class Parser {
         }
     }
 
-    private static Method makeMethod(String line) throws CodeException {
+    private static Method makeMethod(String line, CodeBlock block) throws CodeException {
         String modifier = null, name = null, signature = null;
         Pattern p = Pattern.compile(RegexWorker.METHOD_DECLARE);
         Matcher matcher = p.matcher(line);
         while (matcher.find()) {
             modifier = matcher.group(1);
             name = matcher.group(2);
+            block.checkIfNameValid(name);
             signature = matcher.group(3);
         }
         return new Method(name, signature, modifier);
