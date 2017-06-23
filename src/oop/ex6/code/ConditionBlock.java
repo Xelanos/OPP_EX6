@@ -4,6 +4,7 @@ import oop.ex6.main.CodeException;
 import oop.ex6.main.RegexWorker;
 import oop.ex6.variables.Variable;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -11,6 +12,9 @@ import java.util.regex.Pattern;
 public class ConditionBlock extends CodeBlock {
 
     public ConditionBlock(String Condition, HashSet<Variable> oldVars) throws CodeException{
+        closure = new Closure();
+        code = new LinkedList<>();
+        blocks = new LinkedList<>();
         for(Variable var : oldVars){
             this.closure.addVariable(var);
         }
