@@ -98,8 +98,9 @@ public class RegexWorker {
 
 
     static boolean isCallingVar(String startingWord){
-        String cleanWord = cleanWord(startingWord);
-        return cleanWord.matches(END_WITH_EQUAL);
+        Pattern cleanPattern = Pattern.compile(END_WITH_EQUAL);
+        Matcher result = cleanPattern.matcher(startingWord);
+        return result.find();
     }
     static boolean isFinal(String startingWord){
         String cleanWord = cleanWord(startingWord);

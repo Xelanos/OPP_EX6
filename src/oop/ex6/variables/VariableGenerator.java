@@ -54,7 +54,6 @@ public class VariableGenerator {
 
     public ArrayList<Variable> makeVariablesFromLine(String line, CodeBlock block, GlobalBlock globalBlock) throws CodeException {
         ArrayList<String> varsCommands = RegexWorker.getVarsCommands(RegexWorker.parametersInBrackets(line));
-        String firstWord = RegexWorker.getFirstWord(line);
         ArrayList<Variable> variables = new ArrayList<>();
         String type, value, name, modifier;
         Variable variable;
