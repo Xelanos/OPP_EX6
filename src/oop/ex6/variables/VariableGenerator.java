@@ -87,6 +87,9 @@ public class VariableGenerator {
                             type = prevType;
                         }
                     }
+                    else if (type.equals(prevType)){
+                        throw new CodeException("Same var type in the same row");
+                    }
                 }
                 if (block != null) {
                     if (RegexWorker.isVariableName(value)) {
