@@ -25,7 +25,7 @@ public class RegexWorker {
     private static final String CLEAN_SPACE =
             "\\w+\\s+\\w+\\s+=+\\s+.|\\w+\\s+\\w+\\s+\\w+\\s+=+\\s+.|\\w+\\s+\\w+\\s+\\w|\\w+\\s+\\w";
     private static final String NAME_WITH_EQUAL = "(\\w+)\\s(?=[=])";
-    private static final String VAR_NAME = "(?:\\W+\\w+)";
+    private static final String VAR_NAME = "(?:\\W+\\w+[\\!@#$%^&*]?)";
     public static final  String METHOD_DECLARE = "[\\s\\t]*(\\w+)[\\s\\t]+(\\w+)(.*?)(?<=\\))[\\s\\t]*[${][\\s\\t]*";
     public static final String CONDITION_DECLARE = "[\\s\\t]*(\\w+)[\\s\\t]+(.*?)(?<=\\))";
     public static final String CONDITION_CONTENT = "([\\-]\\d+[\\.]+\\d+)|(\\w+)";

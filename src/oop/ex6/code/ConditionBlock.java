@@ -34,6 +34,11 @@ public class ConditionBlock extends CodeBlock {
                         if(!variable.getType().equals("boolean")){
                             throw new CodeException("Var in condition has to be boolean");
                         }
+                        else{
+                            if(variable.getValue().isEmpty()){
+                                throw new CodeException("Var in condition has to have value");
+                            }
+                        }
                     }
                 }
             }
