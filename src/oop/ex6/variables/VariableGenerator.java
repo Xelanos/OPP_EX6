@@ -107,19 +107,8 @@ public class VariableGenerator {
                     }
                 }
                 variable = makeVariable(type, value, name, modifier);
-                if(block instanceof Method){
-                    for (Variable tempVar : ((Method) block).getCallVariables()){
-                        variables.add(tempVar);
-                    }
-                }
-                if (isVarExists(variables, block, variable)) {
-                    if (isVarExists(variables, globalBlock, variable)){
-                        block.removeVariableFromClosure(variable);
-                    }
-                    else {
-                        throw new CodeException("variable " + variable.getName() +
-                                " is already exists in the scope");
-                    }
+                if (isVarExists(variables, variable, block)) {
+                    throw new CodeException("variable " + variable.getName() + " is already exists in the scope");
                 } else {
                     variables.add(variable);
                 }
@@ -132,13 +121,20 @@ public class VariableGenerator {
         }
     }
 
-    boolean isVarExists(ArrayList<Variable> variables, CodeBlock block, Variable variable) {
-        for (Variable var : variables) {
-            if (var.getName().equals(variable.getName())) {
+    boolean isVarExists(ArrayList<Variable> variables, Variable variable, CodeBlock block){
+        for (Variable var : variables){
+            if (var.getName().equals(variable.getName())){
                 return true;
             }
         }
-        return block != null && block.containVar(variable.getName());
+        if (block instanceof Method){
+            for (Variable var : ((Method) block).getCallVariables()){
+                if (var.getName().equals(variable.getName())){
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     boolean isInMethodSignature(String variableName, CodeBlock block){
