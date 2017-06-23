@@ -50,6 +50,12 @@ public class Closure {
             }
         }
         if (codeBlock instanceof Method) {
+            Method method = (Method)(codeBlock);
+            for (Variable variable : method.callVariables){
+                if (variable.getName().equals(variableName)){
+                    return variable;
+                }
+            }
             block.addToUnknown(variableName);
             return null;
         }

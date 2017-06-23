@@ -2,6 +2,7 @@ package oop.ex6.variables;
 
 import oop.ex6.code.CodeBlock;
 import oop.ex6.code.GlobalBlock;
+import oop.ex6.code.Method;
 import oop.ex6.main.CodeException;
 import oop.ex6.main.RegexWorker;
 
@@ -93,7 +94,7 @@ public class VariableGenerator {
                     if(variableInClosure != null) {
                         if (type.equals(variableInClosure.getType())) {
                             String variableInClosureValue = variableInClosure.getValue();
-                            if (variableInClosureValue.equals("")) {
+                            if (variableInClosureValue.equals("") && (!isInMethodSignature(variableInClosure.getName(), block))) {
                                 throw new VariableException("Referencing variable " + variableInClosure.getName() +
                                         " without assignment");
                             }
@@ -118,6 +119,18 @@ public class VariableGenerator {
         for (Variable var : variables){
             if (var.getName().equals(variable.getName())){
                 return true;
+            }
+        }
+        return false;
+    }
+
+    boolean isInMethodSignature(String variableName, CodeBlock block){
+        if (block instanceof Method) {
+            Method method = (Method)(block);
+            for (Variable variable : method.getCallVariables()) {
+                if (variable.getName().equals(variableName)) {
+                    return true;
+                }
             }
         }
         return false;

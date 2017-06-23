@@ -20,6 +20,9 @@ public class Method extends CodeBlock {
     protected ArrayList<Variable> callVariables;
 
     public Method(String name, String signature, String modifier) throws CodeException {
+        closure = new Closure();
+        code = new LinkedList<>();
+        blocks = new LinkedList<>();
         CodeBlock.checkIfNameValid(name);
         this.name = name;
         if (!Objects.equals(modifier, "void")){
@@ -28,14 +31,10 @@ public class Method extends CodeBlock {
         this.modifier = modifier;
         VariableGenerator generator = VariableGenerator.getInstance();
         callVariables = generator.makeVariablesFromLine(signature, null, null);
-        closure = new Closure();
-        code = new LinkedList<>();
-        blocks = new LinkedList<>();
-
     }
 
     @Override
-    void blockCheck() throws CodeException {
+    public void blockCheck() throws CodeException {
         checkSignature();
     }
 
@@ -56,4 +55,5 @@ public class Method extends CodeBlock {
     public String getName() {
         return name;
     }
+    public ArrayList<Variable> getCallVariables(){ return callVariables;}
 }
