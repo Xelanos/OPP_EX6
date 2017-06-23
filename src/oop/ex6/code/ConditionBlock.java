@@ -29,6 +29,12 @@ public class ConditionBlock extends CodeBlock {
                     if(!containVar(matcher.group())){
                         throw new CodeException("Illegal condition ");
                     }
+                    else{
+                        Variable variable = getVariable(matcher.group(), null);
+                        if(!variable.getType().equals("boolean")){
+                            throw new CodeException("Var in condition has to be boolean");
+                        }
+                    }
                 }
             }
             else {
