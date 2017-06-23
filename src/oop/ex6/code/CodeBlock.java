@@ -94,4 +94,9 @@ public abstract class CodeBlock {
     public Variable getVariable(String variableName, GlobalBlock block) throws CodeException {
         return closure.getVariable(variableName, block, this);
     }
+
+    public void removeVariableFromClosure(Variable variable){
+        String varName = variable.getName();
+        closure.deleteVar(varName);
+    }
 }

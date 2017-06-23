@@ -112,8 +112,14 @@ public class VariableGenerator {
                         variables.add(tempVar);
                     }
                 }
-                if (isVarExists(variables, variable)) {
-                    throw new CodeException("variable " + variable.getName() + " is already exists in the scope");
+                if (isVarExists(variables, block, variable)) {
+                    if (isVarExists(variables, globalBlock, variable)){
+                        block.removeVariableFromClosure(variable);
+                    }
+                    else {
+                        throw new CodeException("variable " + variable.getName() +
+                                " is already exists in the scope");
+                    }
                 } else {
                     variables.add(variable);
                 }
@@ -126,13 +132,13 @@ public class VariableGenerator {
         }
     }
 
-    boolean isVarExists(ArrayList<Variable> variables, Variable variable){
-        for (Variable var : variables){
-            if (var.getName().equals(variable.getName())){
+    boolean isVarExists(ArrayList<Variable> variables, CodeBlock block, Variable variable) {
+        for (Variable var : variables) {
+            if (var.getName().equals(variable.getName())) {
                 return true;
             }
         }
-        return false;
+        return block != null && block.containVar(variable.getName());
     }
 
     boolean isInMethodSignature(String variableName, CodeBlock block){

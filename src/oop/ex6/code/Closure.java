@@ -80,4 +80,12 @@ public class Closure {
         return methods;
     }
 
+    void deleteVar(String varName){
+        for (Variable variable : variables){
+            if (variable.getName().equals(varName)){
+                variables.remove(variable);
+            }
+        }
+    }
+
 }
