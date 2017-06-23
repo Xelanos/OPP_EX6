@@ -1,5 +1,6 @@
 package oop.ex6.variables;
 
+
 import oop.ex6.code.CodeBlock;
 import oop.ex6.code.GlobalBlock;
 import oop.ex6.code.Method;
@@ -51,68 +52,71 @@ public class VariableGenerator {
         }
     }
 
-    public ArrayList<Variable> makeVariablesFromLine(String line, CodeBlock block, GlobalBlock globalBlock) throws CodeException{
+    public ArrayList<Variable> makeVariablesFromLine(String line, CodeBlock block, GlobalBlock globalBlock) throws CodeException {
         ArrayList<String> varsCommands = RegexWorker.getVarsCommands(RegexWorker.parametersInBrackets(line));
+        String firstWord = RegexWorker.getFirstWord(line);
         ArrayList<Variable> variables = new ArrayList<>();
         String type, value, name, modifier;
         Variable variable;
         String prevType = "";
-        for (String command : varsCommands){
-            command = command.trim();
-            if(command.contains("final")){
-                modifier = "final";
-                type = RegexWorker.getSecondWord(command);
-                name = RegexWorker.getNameWithEqual(command);
-                value = RegexWorker.getValueAfterEqual(command);
-            }
-            else if(command.isEmpty() || command.equals("(")){
-                continue;
-            }
-            else {
-                modifier = null;
-                if (command.contains("=")) {
-                    value = RegexWorker.getValueAfterEqual(command);
+        if (!RegexWorker.isBadTemplate(line)) {
+            for (String command : varsCommands) {
+                command = command.trim();
+                if (command.contains("final")) {
+                    modifier = "final";
+                    type = RegexWorker.getSecondWord(command);
                     name = RegexWorker.getNameWithEqual(command);
-
+                    value = RegexWorker.getValueAfterEqual(command);
+                } else if (command.isEmpty() || command.equals("(")) {
+                    continue;
                 } else {
-                    value = "";
-                    name = RegexWorker.getVarName(command);
-                }
-                type = RegexWorker.getFirstWord(command);
-                if (name.isEmpty() || name.contains(type) || type.contains(name)){
-                    if(!prevType.isEmpty()) {
-                        if (!type.contains(name) || name.isEmpty()) {
-                            name = type;
-                        }
-                        type = prevType;
+                    modifier = null;
+                    if (command.contains("=")) {
+                        value = RegexWorker.getValueAfterEqual(command);
+                        name = RegexWorker.getNameWithEqual(command);
+
+                    } else {
+                        value = "";
+                        name = RegexWorker.getVarName(command);
                     }
-                }
-            }
-            if (block != null){
-                if (RegexWorker.isVariableName(value)){
-                    Variable variableInClosure = block.getVariable(value, globalBlock);
-                    if(variableInClosure != null) {
-                        if (type.equals(variableInClosure.getType())) {
-                            String variableInClosureValue = variableInClosure.getValue();
-                            if (variableInClosureValue.equals("") && (!isInMethodSignature(variableInClosure.getName(), block))) {
-                                throw new VariableException("Referencing variable " + variableInClosure.getName() +
-                                        " without assignment");
+                    type = RegexWorker.getFirstWord(command);
+                    if (name.isEmpty() || name.contains(type) || type.contains(name)) {
+                        if (!prevType.isEmpty()) {
+                            if (!type.contains(name) || name.isEmpty()) {
+                                name = type;
                             }
-                            value = variableInClosureValue;
-                        } else throw new VariableException(name, variableInClosure.getName());
+                            type = prevType;
+                        }
                     }
                 }
+                if (block != null) {
+                    if (RegexWorker.isVariableName(value)) {
+                        Variable variableInClosure = block.getVariable(value, globalBlock);
+                        if (variableInClosure != null) {
+                            if (type.equals(variableInClosure.getType())) {
+                                String variableInClosureValue = variableInClosure.getValue();
+                                if (variableInClosureValue.equals("") && (!isInMethodSignature(variableInClosure.getName(), block))) {
+                                    throw new VariableException("Referencing variable " + variableInClosure.getName() +
+                                            " without assignment");
+                                }
+                                value = variableInClosureValue;
+                            } else throw new VariableException(name, variableInClosure.getName());
+                        }
+                    }
+                }
+                variable = makeVariable(type, value, name, modifier);
+                if (isVarExists(variables, variable)) {
+                    throw new CodeException("variable " + variable.getName() + " is already exists in the scope");
+                } else {
+                    variables.add(variable);
+                }
+                prevType = type;
             }
-            variable = makeVariable(type, value, name, modifier);
-            if(isVarExists(variables, variable)){
-                throw new CodeException("variable "+variable.getName()+" is already exists in the scope");
-            }
-            else {
-                variables.add(variable);
-            }
-            prevType = type;
+            return variables;
         }
-        return variables;
+        else {
+            throw new CodeException("Can't assign method to variable.");
+        }
     }
 
     boolean isVarExists(ArrayList<Variable> variables, Variable variable){

@@ -52,7 +52,7 @@ public class Parser {
                         // JUST FOR THE TEST
                         ConditionBlock conditionBlock = makeConditionBlock(line, blocks.peek().getVars());
                         blocks.add(conditionBlock);
-                    } else if (RegexWorker.isCallingMethod(line) || RegexWorker.isCallingVar(firstWord)
+                    } else if ((RegexWorker.isCallingMethod(firstWord)) || RegexWorker.isCallingVar(firstWord)
                             || RegexWorker.isReturn(line)) { // if regular code line.
                         block.addLineToCode(line);
                     } else if (RegexWorker.isClosingScope(line)) {    // if is closing brackets
@@ -118,4 +118,5 @@ public class Parser {
             }
         }
     }
+
 }

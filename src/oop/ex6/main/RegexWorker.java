@@ -29,7 +29,7 @@ public class RegexWorker {
     public static final String CONDITION_DECLARE = "[\\s\\t]*(\\w+)[\\s\\t]+(.*?)(?<=\\))";
     public static final String CONDITION_CONTENT = "([\\-]\\d+[\\.]+\\d+)|(\\w+)";
     public static final String VARIABLE_NAME = "^[a-zA-Z_][a-zA-Z_$0-9]*$";
-
+    private static final String BAD_TEMPLATE = "\\w+\\s\\w\\s\\=\\s\\w+\\((.?)*?\\)";
 
     public static String getFirstWord(String line){
         Pattern firstWordPattern = Pattern.compile(FIRST_WORD);
@@ -202,5 +202,14 @@ public class RegexWorker {
 
     public static boolean isVariableName(String value){
        return value.matches(VARIABLE_NAME) && !value.equals("true") && !value.equals("false");
+    }
+
+    public static boolean isBadTemplate(String line){
+        Pattern pattern = Pattern.compile(BAD_TEMPLATE);
+        Matcher result = pattern.matcher(line);
+        if (result.find()){
+            return true;
+        }
+        return false;
     }
 }
