@@ -107,6 +107,11 @@ public class VariableGenerator {
                     }
                 }
                 variable = makeVariable(type, value, name, modifier);
+                if(block instanceof Method){
+                    for (Variable tempVar : ((Method) block).getCallVariables()){
+                        variables.add(tempVar);
+                    }
+                }
                 if (isVarExists(variables, variable)) {
                     throw new CodeException("variable " + variable.getName() + " is already exists in the scope");
                 } else {
