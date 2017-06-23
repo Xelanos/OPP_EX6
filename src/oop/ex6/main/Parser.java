@@ -49,7 +49,6 @@ public class Parser {
                         blocks.push(method);
                     } else if ((RegexWorker.isConditionDeclaration(firstWord)) || // if starts with if or while
                             RegexWorker.isLoopDeclaration(firstWord)) {
-                        // JUST FOR THE TEST
                         ConditionBlock conditionBlock = makeConditionBlock(line, blocks.peek().getVars());
                         blocks.add(conditionBlock);
                     } else if ((RegexWorker.isCallingMethod(firstWord)) || RegexWorker.isCallingVar(firstWord)

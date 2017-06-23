@@ -7,7 +7,8 @@ import java.util.regex.Pattern;
 
 public class RegexWorker {
 
-    private static final String COMMENT = "[\\/]+";
+    private static final String COMMENT = "[\\/]{2}";
+    private static final String IS_BAD_COMMENT = "[\\/]";
     private static final String BLANK_ROW = "^\\s*$";
     private static final String END_WITH_OPEN_BARKETS = "(.*?)(?<=\\))";
     private static final String END_WITH_EQUAL = "=$";
@@ -106,12 +107,20 @@ public class RegexWorker {
         String cleanWord = cleanWord(startingWord);
         return cleanWord.equals("final");
     }
-    static boolean isCommentOrBlank(String line){
+    static boolean isCommentOrBlank(String line) throws CodeException{
         boolean result = false;
-        Pattern pattern = Pattern.compile(COMMENT);
+        Pattern pattern = Pattern.compile(IS_BAD_COMMENT);
         Matcher matcher = pattern.matcher(line);
         if (matcher.find()){
-            result = true;
+            pattern = Pattern.compile(COMMENT);
+            matcher = pattern.matcher(line);
+            if(matcher.find()){
+                result = true;
+            }
+            else {
+                throw new CodeException("Bad Comment Line");
+            }
+
         }
         else{
             pattern = Pattern.compile(BLANK_ROW);
