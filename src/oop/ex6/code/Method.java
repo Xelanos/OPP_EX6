@@ -37,6 +37,18 @@ public class Method extends CodeBlock {
     @Override
     public void blockCheck() throws CodeException {
         checkSignature();
+        checkIfHasReturn();
+    }
+
+    /**
+     * checks if the method has a return line.
+     * @throws CodeException if method has no return.
+     */
+    private void checkIfHasReturn() throws CodeException {
+        boolean hasReturn = false;
+        String lastLine = code.getLast();
+        if (lastLine.equals("return;")) hasReturn = true;
+        if (!hasReturn) throw new CodeException("Method "+getName()+" has no return at the end");
     }
 
     private void checkSignature() throws CodeException {
@@ -56,6 +68,7 @@ public class Method extends CodeBlock {
     public String getName() {
         return name;
     }
+
     public ArrayList<Variable> getCallVariables(){ return callVariables;}
 
     /**
