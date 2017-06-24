@@ -6,6 +6,33 @@ xelanos
                                            =  Description  =
 ==============================================================================================================
 
+Main package -
+    Sjavac - The main class of the program, get the sJava file as argument and returns if it's good or not.
+    RegexWorker - A class responsible for handling all regex related calculations.
+    Parser - A class responsible for taking the lines of code from sJava file and make it into code blocks.
+    CodeException - an exception for any faulty code in the sJava file.
+
+Code package - package made to handle various code properties of the program :
+    CodeBlock - an abstract class from which every other code class inherits.
+        GlobalBlock - A class representing the programs global block.
+        Method - A class representing a method block.
+        ConditionBlock - A class representing a condition block.
+    Closure - a class representing closure of a block, has variables and methods.
+    NamingException - an exception for errors from a bad name for variable or method.
+
+
+Variables package - package made to handle the variable of the program :
+    Variable - an abstract class from which every Variable inherits. has the following subclasses:
+        * Int
+        * Char
+        * Double
+        * Boolean
+        * String
+
+    VariableGenerator - a class that handles the creation of new variables from lines of code.
+    VariableException - an exception class for any variable related issues,
+     extends the more general CodeException
+
 
 
 ==============================================================================================================
@@ -42,3 +69,37 @@ uses the Regex commands. any Regex usage has to go from this class.
 ==============================================================================================================
                                         =  Answers to Questions  =
 ==============================================================================================================
+
+Error Handling -
+    We chose to tackle error handling by catching the most generic exceptions in the main.
+    As such, our main catches the generic CodeException class, and every other code related exception in our
+    code extends this exception. Also, almost every method throws an exception which is a son of CodeException
+    We chose to do so, because for most of out methods we wanted the return something other then the boolean
+    yes/no, while also checking for error. It's also came in useful when de-bugging , since we can see the
+    call stack and know where things went wrong. The final reason is that we can add information at each
+    level of the call stack the exception was thrown from, to get a complete error analysis.
+
+
+Object Oriented Design-
+    Adding support for new variable types - All we need to to is to make that variable a class which
+    extends Variable, and implement the checkIfValueValid method within it. Then add the type to the generator
+    case/switch list and we are done!
+
+    Implementing new features -
+        Different method types - Firstly , we will need to change the method constructor, which now has
+        only one line checking the method type to a method with a switch/case statement of all supported
+        types.
+        Then, we will need to check if the return value of the function is the type of the function (weather
+        if it's a primitive or another variable), we will  need to do this for any returns statement and not
+        just the last one.
+        Lastly we will need to add support for variable assignments
+
+
+Regular Expressions -
+    One of our main use for regex was the method declaration regex - which while also detecting the line
+     to be a method declaration, also divided the line to parts(modifier, name, callSting)  while doing so.
+      regex can be seen under RegexWorker : METHOD_DECLARE.
+
+     Another main regex was a regex to find the first word of the line. Since the line can start with spaces,
+     it was critical to get the first word in any given line to know what we are working with.
+     regex can be seen under RegexWorker : FIRST_WORD.

@@ -11,7 +11,7 @@ import java.util.LinkedList;
 import java.util.Objects;
 
 /**
- * Created by OrMiz on 12/06/2017.
+ * A class representing a method
  */
 public class Method extends CodeBlock {
 
@@ -80,7 +80,7 @@ public class Method extends CodeBlock {
      * @param name method name
      * @throws NamingException if the name is invalid.
      */
-    void checkName(String name) throws NamingException{
+    private void checkName(String name) throws NamingException{
         if (!name.matches(RegexWorker.METHOD_NAME_CHECK)){
             throw new NamingException(name, "Illegal method name");
         }
