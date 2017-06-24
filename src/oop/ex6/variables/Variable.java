@@ -60,4 +60,6 @@ public abstract class Variable {
     public String getValue() {
         return value;
     }
+
+    public String getModifier() {return modifier;}
 }
