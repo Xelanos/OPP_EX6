@@ -56,7 +56,7 @@ public class Parser {
                         blocks.add(conditionBlock);
                 } else if (RegexWorker.isMethodDeclaration(line)) {    // if the line starts with void
                         Method method = makeMethod(line);
-                        //method.combineClosure(block);
+                        method.combineClosure(block);
                         blocks.push(method);
                     } else if (((RegexWorker.isCallingMethod(line)  && !RegexWorker.isBadTemplate(line))
                             || RegexWorker.isCallingVar(firstWord)

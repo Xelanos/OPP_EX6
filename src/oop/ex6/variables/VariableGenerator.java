@@ -122,7 +122,7 @@ public class VariableGenerator {
                     }
                 }
                 variable = makeVariable(type, value, name, modifier);
-                if (isVarExists(variables, variable, block)) {
+                if (isVarExists(variables, variable, block, globalBlock)) {
                     throw new CodeException("variable " + variable.getName() +
                             " is already exists in the scope");
                 }
@@ -166,12 +166,29 @@ public class VariableGenerator {
      * @param block block in which the variable is added. can be null if block is not opened yet.
      * @return true if the variable is in the block, false if not.
      */
-    boolean isVarExists(ArrayList<Variable> variables, Variable variable, CodeBlock block) {
-        for (Variable var : variables) { // checking Vars from the current line
-            if (var.getName().equals(variable.getName())) {
-                return true;
+    boolean isVarExists(ArrayList<Variable> variables, Variable variable, CodeBlock block, GlobalBlock globalBlock) {
+        if(globalBlock == null || block == null) {
+            for (Variable var : variables) { // checking Vars from the current line
+                if (var.getName().equals(variable.getName())) {
+                        if (var.getName().equals(variable.getName())) {
+                            return true;
+                        }
+                }
             }
         }
+        else{
+            for (Variable var : block.getVars()) { // checking Vars from the current line
+                if (var.getName().equals(variable.getName())) {
+                    for (Variable globalVar : globalBlock.getVars()) {
+                        if (globalVar.getName().equals(variable.getName())) {
+                            return false;
+                        } else {
+                            return true;
+                        }
+                    }
+                }
+            }
+            }
         if (block instanceof Method) { // in case the block is method, checking the signature parameters
             for (Variable var : ((Method) block).getCallVariables()) {
                 if (var.getName().equals(variable.getName())) {
