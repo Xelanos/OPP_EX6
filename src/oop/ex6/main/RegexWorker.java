@@ -20,7 +20,7 @@ public class RegexWorker {
     private static final String RETURN = "([\\s\\t]return;)|(return;)";
     private static final String PARAMETERS_IN_BRACKETS = "(?=\\()(.*?)(?=\\))";
     private static final String EXPRESSION_IN_BRACKETS = "[a-zA-Z0-9_=\\-\\s.\"\'\\%]+";
-    private static final String VALUE_AFTER_EQUAL = "[^=\\s]+$";
+    private static final String VALUE_AFTER_EQUAL = "[^=]+$";
     private static final String CLEAN_ENDING = ".*(?=;)";
     private static final String CLEAN_SPACE =
             "\\w+\\s+\\w+\\s+=+\\s+.|\\w+\\s+\\w+\\s+\\w+\\s+=+\\s+.|\\w+\\s+\\w+\\s+\\w|\\w+\\s+\\w";
@@ -183,7 +183,7 @@ public class RegexWorker {
         Pattern firstWordPattern = Pattern.compile(VALUE_AFTER_EQUAL);
         Matcher result = firstWordPattern.matcher(line);
         if (result.find()){
-            return cleanWord(result.group(0));
+            return cleanWord(result.group(0).trim());
         }
         else{
             throw new CodeException("NO Value after Equal");
