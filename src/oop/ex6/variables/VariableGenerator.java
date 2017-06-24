@@ -101,7 +101,7 @@ public class VariableGenerator {
                             type = prevType;
                         }
                     }
-                    else if (type.equals(prevType)){
+                    else if (type.equals(prevType) && block != null && globalBlock != null){
                         throw new CodeException("Same var type in the same row");
                     }
                 }

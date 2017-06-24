@@ -21,14 +21,14 @@ public class RegexWorker {
     private static final String PARAMETERS_IN_BRACKETS = "(?=\\()(.*?)(?=\\))";
     private static final String EXPRESSION_IN_BRACKETS = "[a-zA-Z0-9_=\\-\\s.\"\'\\%]+";
     private static final String VALUE_AFTER_EQUAL = "[^=]+$";
-    private static final String CLEAN_ENDING = ".*(?=;)";
+    private static final String CLEAN_ENDING = ".*(?=;)|.*(?=\\()";
     private static final String CLEAN_SPACE =
             "\\w+\\s+\\w+\\s+=+\\s+.|\\w+\\s+\\w+\\s+\\w+\\s+=+\\s+.|\\w+\\s+\\w+\\s+\\w|\\w+\\s+\\w";
     private static final String NAME_WITH_EQUAL = "(\\w+)[\\s\\t]+?(?=[=])[\\s\\t]?|(\\w+)(?=[=])[\\s\\t]?";
     private static final String VAR_NAME = "(?:\\W+\\w+[\\!@#$%^&*]?)+";
     public static final  String METHOD_DECLARE =
-            "[\\s\\t]*(\\w+)[\\s\\t]+(\\w+[!@#$%^&*]?)(.*?)(?<=\\))[\\s\\t]*[${][\\s\\t]*";
-    public static final String CONDITION_DECLARE = "[\\s\\t]*(\\w+)[\\s\\t]+(.*?)(?<=\\))";
+            "[\\s\\t]*(\\w+)[\\s\\t]*(\\w+[\\s!@#$%^&*]?[\\w\\%]+)(.*?)(?<=\\))[\\s\\t]*[${][\\s\\t]*";
+    public static final String CONDITION_DECLARE = "[\\s\\t]*(\\w+)[\\s\\t]?+(.*?)(?<=\\))";
     public static final String CONDITION_CONTENT = "([\\-]\\d+[\\.]+\\d+)|(\\w+)";
     public static final String VARIABLE_NAME = "^[a-zA-Z_][a-zA-Z_$0-9]*$";
     private static final String BAD_TEMPLATE = "\\w+\\s\\w\\s\\=\\s\\w+\\((.?)*?\\)";
@@ -79,7 +79,7 @@ public class RegexWorker {
     }
 
     static boolean isMethodDeclaration(String line){
-        return line.matches(METHOD_DECLARE);
+        return isGoodByRegex(line, METHOD_DECLARE);
     }
 
     static boolean isConditionDeclaration(String startingWord){

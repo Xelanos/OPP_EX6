@@ -43,16 +43,17 @@ public class Parser {
                     if (RegexWorker.isFinal(firstWord)) {    // if the line starts with final.
                         firstWord = RegexWorker.getSecondWord(line);
                     }
-                    if (RegexWorker.isMethodDeclaration(line)) {    // if the line starts with void
-                        Method method = makeMethod(line);
-                        //method.combineClosure(block);
-                        blocks.push(method);
-                    } else if ((RegexWorker.isConditionDeclaration(firstWord)) || // if starts with if or while
+                    if ((RegexWorker.isConditionDeclaration(firstWord)) || // if starts with if or while
                             RegexWorker.isLoopDeclaration(firstWord)) {
                         ConditionBlock conditionBlock = makeConditionBlock(line, blocks.peek().getVars());
                         blocks.add(conditionBlock);
-                    } else if ((RegexWorker.isCallingMethod(firstWord)) || RegexWorker.isCallingVar(firstWord)
-                            || RegexWorker.isReturn(line)) { // if regular code line.
+                } else if (RegexWorker.isMethodDeclaration(line)) {    // if the line starts with void
+                        Method method = makeMethod(line);
+                        //method.combineClosure(block);
+                        blocks.push(method);
+                    } else if (((RegexWorker.isCallingMethod(line)  && !RegexWorker.isBadTemplate(line))
+                            || RegexWorker.isCallingVar(firstWord)
+                            || RegexWorker.isReturn(line))) { // if regular code line.
                         block.addLineToCode(line);
                     } else if (RegexWorker.isClosingScope(line)) {    // if is closing brackets
                         CodeBlock tempBlock = blocks.pop();
