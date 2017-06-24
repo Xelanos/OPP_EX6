@@ -77,6 +77,7 @@ public class VariableGenerator {
                     } else {
                         value = "";
                         name = RegexWorker.getVarName(command);
+                        name = name.trim();
                     }
                     type = RegexWorker.getFirstWord(command);
                     if (name.isEmpty() || name.contains(type) || type.contains(name)) {
