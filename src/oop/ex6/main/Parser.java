@@ -110,7 +110,7 @@ public class Parser {
         Matcher matcher = p.matcher(line);
         while (matcher.find()) {
             modifier = matcher.group(1);
-            name = matcher.group(2);
+            name = matcher.group(2).trim();
             signature = matcher.group(3);
         }
         return new Method(name, signature, modifier);
