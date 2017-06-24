@@ -47,7 +47,7 @@ public class Method extends CodeBlock {
     private void checkIfHasReturn() throws CodeException {
         boolean hasReturn = false;
         String lastLine = code.getLast();
-        if (lastLine.equals("return;")) hasReturn = true;
+        if (RegexWorker.isReturn(lastLine)) hasReturn = true;
         if (!hasReturn) throw new CodeException("Method "+getName()+" has no return at the end");
         super.blockCheck();
     }

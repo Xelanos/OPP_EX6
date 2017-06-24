@@ -14,7 +14,11 @@ import java.util.ArrayList;
  */
 public class VariableGenerator {
     private static VariableGenerator instance = null;
-
+    private static final int VAR_MODIFIER = 0;
+    private static final int VAR_TYPE = 1;
+    private static final int VAR_NAME = 2;
+    private static final int VAR_VALUE = 3;
+    private static final int VAR_PREV_TYPE = 4;
     /**
      * private const. to restrict new instances
      */
@@ -69,41 +73,24 @@ public class VariableGenerator {
         ArrayList<String> varsCommands = RegexWorker.getVarsCommands(RegexWorker.parametersInBrackets(line));
         ArrayList<Variable> variables = new ArrayList<>();
         String type, value, name, modifier;
+        String[] varParameters;
         Variable variable;
         String prevType = "";
         if (!RegexWorker.isBadTemplate(line)) {
             for (String command : varsCommands) {
-                command = command.trim();
-                if (command.contains("final")) {
-                    modifier = "final";
-                    type = RegexWorker.getSecondWord(command);
-                    name = RegexWorker.getNameWithEqual(command);
-                    value = RegexWorker.getValueAfterEqual(command);
-                } else if (command.isEmpty() || command.equals("(")) {
-                    continue;
-                } else {
-                    modifier = null;
-                    if (command.contains("=")) {
-                        value = RegexWorker.getValueAfterEqual(command);
-                        name = RegexWorker.getNameWithEqual(command);
-
+                varParameters = getVarParameters(command, prevType, block, globalBlock);
+                if(varParameters != null) {
+                    if (!varParameters[VAR_MODIFIER].isEmpty()) {
+                        modifier = varParameters[VAR_MODIFIER];
                     } else {
-                        value = "";
-                        name = RegexWorker.getVarName(command);
-                        name = name.trim();
+                        modifier = null;
                     }
-                    type = RegexWorker.getFirstWord(command);
-                    if (name.isEmpty() || name.contains(type) || type.contains(name)) {
-                        if (!prevType.isEmpty()) {
-                            if (!type.contains(name) || name.isEmpty()) {
-                                name = type;
-                            }
-                            type = prevType;
-                        }
-                    }
-                    else if (type.equals(prevType) && block != null && globalBlock != null){
-                        throw new CodeException("Same var type in the same row");
-                    }
+                    type = varParameters[VAR_TYPE];
+                    name = varParameters[VAR_NAME];
+                    value = varParameters[VAR_VALUE];
+                }
+                else {
+                    continue;
                 }
                 if (block != null) {
                     if (RegexWorker.isVariableName(value)) {
@@ -210,7 +197,56 @@ public class VariableGenerator {
         return globalBlock != null && globalBlock.containVar(variable.getName());
     }
 
+    /**
+     * Gets a command, checks if all the conditions are good and set the var's parameters
+     * @param command - the command line to check.
+     * @param block - the block we make the var at.
+     * @param globalBlock - the global scope
+     * @return array of strings with the parameters
+     * @throws CodeException in case on of the values isn't good
+     */
+    private String[] getVarParameters(String command, String prevType, CodeBlock block,
+                                      GlobalBlock globalBlock) throws CodeException{
+        String type, value, name, modifier;
+        String[] varParameters = new String[4];
+        command = command.trim();
+        if (command.contains("final")) {    // if has modifier
+            modifier = "final";
+            type = RegexWorker.getSecondWord(command);
+            name = RegexWorker.getNameWithEqual(command);
+            value = RegexWorker.getValueAfterEqual(command);
+        } else if (command.isEmpty() || command.equals("(")) { // if nothing at the command
+            return null;
+        } else {
+            modifier = "";
+            if (command.contains("=")) { // if there is an assignment in the command
+                value = RegexWorker.getValueAfterEqual(command);
+                name = RegexWorker.getNameWithEqual(command);
 
+            } else { // regular var definition
+                value = "";
+                name = RegexWorker.getVarName(command);
+                name = name.trim();
+            }
+            type = RegexWorker.getFirstWord(command);
+            if (name.isEmpty() || name.contains(type) || type.contains(name)) {
+                if (!prevType.isEmpty()) { // fixing in case of regex mess up
+                    if (!type.contains(name) || name.isEmpty()) {
+                        name = type;
+                    }
+                    type = prevType;
+                }
+            }
+            else if (type.equals(prevType) && block != null && globalBlock != null){
+                throw new CodeException("Same var type in the same row");
+            }
+        }
+        varParameters[VAR_MODIFIER] = modifier;
+        varParameters[VAR_TYPE] = type;
+        varParameters[VAR_NAME] = name;
+        varParameters[VAR_VALUE] = value;
+        return varParameters;
+    }
     /**
      * check if variable is in the method signature.
      * @param variableName name of the variable to check.
