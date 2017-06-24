@@ -35,13 +35,17 @@ public abstract class CodeBlock {
             Variable varToCheck = method.callVariables.get(i);
             if(this.closure.containVar(valueToCheck)){
                 Variable parameterVar = this.closure.getVariable(valueToCheck, null, this);
-                if (!varToCheck.checkIfValueValid(parameterVar.getValue())){
-                    throw new CodeException("Error in method "+methodName+" parameter "+i+".\n"+
-                            "Expected "+varToCheck.getType());
+                if (!varToCheck.getType().equals(parameterVar.getType())) {
+                    throw new CodeException("Error in method " + methodName + " parameter " + (i+1) + ".\n" +
+                            "Expected " + varToCheck.getType());
+                }
+                else if (!varToCheck.checkIfValueValid(parameterVar.getValue())){
+                    throw new CodeException("Error in method " + methodName + " parameter " + (i+1) + ".\n" +
+                            "Expected " + varToCheck.getType());
                 }
             }
             else if (!varToCheck.checkIfValueValid(valueToCheck)){
-                throw new CodeException("Error in method "+methodName+" parameter "+i+".\n"+
+                throw new CodeException("Error in method "+methodName+" parameter "+ (i+1) +".\n"+
                         "Expected "+varToCheck.getType());
             }
         }
