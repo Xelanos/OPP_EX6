@@ -93,58 +93,42 @@ public class RegexWorker {
     }
 
     static boolean isCallingMethod(String startingWord){
-        Pattern cleanPattern = Pattern.compile(END_WITH_OPEN_BARKETS);
-        Matcher result = cleanPattern.matcher(startingWord);
-        return result.find();
+        return isGoodByRegex(startingWord, END_WITH_OPEN_BARKETS);
     }
 
 
     static boolean isCallingVar(String startingWord){
-        Pattern cleanPattern = Pattern.compile(END_WITH_EQUAL);
-        Matcher result = cleanPattern.matcher(startingWord);
-        return result.find();
+        return isGoodByRegex(startingWord, END_WITH_EQUAL);
     }
+
     static boolean isFinal(String startingWord){
         String cleanWord = cleanWord(startingWord);
         return cleanWord.equals("final");
     }
-    static boolean isCommentOrBlank(String line) throws CodeException{
-        boolean result = false;
-        Pattern pattern = Pattern.compile(IS_BAD_COMMENT);
-        Matcher matcher = pattern.matcher(line);
-        if (matcher.find()){
-            pattern = Pattern.compile(COMMENT);
-            matcher = pattern.matcher(line);
-            if(matcher.find()){
-                result = true;
-            }
-            else {
-                throw new CodeException("Bad Comment Line");
-            }
 
-        }
-        else{
-            pattern = Pattern.compile(BLANK_ROW);
-            matcher = pattern.matcher(line);
-            if(matcher.find()){
-                result = true;
+    static boolean isCommentOrBlank(String line) throws CodeException{
+        boolean result;
+            if(isGoodByRegex(line, IS_BAD_COMMENT)){
+                if(isGoodByRegex(line, COMMENT)){
+                    result = true;
+                }
+                else{
+                    throw new CodeException("Bad Comment Line");
+                }
             }
+        else{
+                result = isGoodByRegex(line, BLANK_ROW);
         }
         return result;
     }
 
+
     static boolean isClosingScope(String line){
-        return ((line.matches(SCOPE_CLOSING)));
+       return isGoodByRegex(line, SCOPE_CLOSING);
     }
 
     static boolean isReturn(String line){
-        boolean result = false;
-        Pattern pattern = Pattern.compile(RETURN);
-        Matcher matcher = pattern.matcher(line);
-        if (matcher.find()){
-            result = true;
-        }
-        return result;
+        return isGoodByRegex(line, RETURN);
     }
 
     public static String getSecondWord(String line) throws CodeException {
@@ -206,21 +190,21 @@ public class RegexWorker {
         return result.trim();
     }
 
-    public boolean hasEnding(String line){
-        return false;
-    }
-
-
     public static boolean isVariableName(String value){
        return value.matches(VARIABLE_NAME) && !value.equals("true") && !value.equals("false");
     }
 
     public static boolean isBadTemplate(String line){
-        Pattern pattern = Pattern.compile(BAD_TEMPLATE);
-        Matcher result = pattern.matcher(line);
-        if (result.find()){
-            return true;
+        return isGoodByRegex(line, BAD_TEMPLATE);
+    }
+
+    static boolean isGoodByRegex(String line, String regex){
+        boolean result = false;
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(line);
+        if (matcher.find()){
+            result = true;
         }
-        return false;
+        return result;
     }
 }
