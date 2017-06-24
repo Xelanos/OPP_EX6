@@ -35,7 +35,7 @@ public class RegexWorker {
     public static final String CONDITION_CONTENT = "([\\-]\\d+[\\.]+\\d+)|(\\w+)";
     public static final String VARIABLE_NAME = "^[a-zA-Z_][a-zA-Z_$0-9]*$";
     private static final String BAD_TEMPLATE = "\\w+\\s\\w\\s\\=\\s\\w+\\((.?)*?\\)";
-    private static final String METHOD_NAME = "[\\s\\t]*?\\w*[\\s\\t]?\\(";
+    private static final String METHOD_NAME = "[\\s\\t]*\\w*[\\s\\t]+?\\((?<=\\()|[\\s\\t]*?\\w*[\\s\\t]?\\(";
     public static final String CALL_STRING = "\\(([^)]+)\\)";
     public static final String METHOD_NAME_CHECK = "^[a-zA-Z]\\w*";
     public static final String VAR_NAME_FROM_DECLARE = "^[\\s\\t]?\\w+";
