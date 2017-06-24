@@ -1,6 +1,6 @@
 package oop.ex6.code;
 
-import com.sun.org.apache.regexp.internal.RE;
+
 import oop.ex6.main.CodeException;
 import oop.ex6.main.RegexWorker;
 import oop.ex6.variables.Variable;
@@ -17,9 +17,33 @@ public abstract class CodeBlock {
     public void blockCheck() throws CodeException{
         for (String codeLine : code){
             if (RegexWorker.isCallingMethod(codeLine)){
-                String methodName = RegexWorker.getMethodName(codeLine);
-                String callString = RegexWorker.getCleanCallString(codeLine);
+                String methodName = RegexWorker.getMethodName(codeLine).trim();
+                String callString = RegexWorker.cleanSpace(RegexWorker.getCleanCallString(codeLine).trim());
+                if(this instanceof Method){
+                    Method method = (Method)(this);
+                    if(method.getName().equals(methodName)){
+                        continue;
+                    }
+                }
                 methoedCallCheck(methodName, callString);
+            }
+            else if (RegexWorker.isCallingVar(codeLine)){
+                String varName = RegexWorker.getVarNameFromDeclare(codeLine);
+                if(this instanceof Method){
+                    Method method = (Method)(this);
+                    for(Variable variable : method.getCallVariables()){
+                        this.addVarToClosure(variable);
+                    }
+                }
+                if (closure.containVar(varName)){
+                    Variable variable = closure.getVariable(varName, null, this);
+                    if(variable.getModifier() != null){
+                       throw new CodeException("Can't change final var");
+                    }
+                }
+                else{
+                    throw new CodeException("Var Doesn't Exists");
+                }
             }
         }
     }

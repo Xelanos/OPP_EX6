@@ -37,18 +37,22 @@ public class Method extends CodeBlock {
     @Override
     public void blockCheck() throws CodeException {
         checkSignature();
+        super.blockCheck();
     }
 
     private void checkSignature() throws CodeException {
-        for (String variableDeclaration : signature){
-            String[] parts = variableDeclaration.split("\\s+");
-            if (parts.length != 2) throw new CodeException("Wrong variable declaration in method "+name);
-            String type = parts[0];
-            String name = parts[1];
-            VariableGenerator generator = VariableGenerator.getInstance();
-            Variable variableToAdd = generator.makeVariable(type, null ,name, null);
-            closure.addVariable(variableToAdd);
-            callVariables.add(variableToAdd);
+        if (signature != null) {
+            for (String variableDeclaration : signature) {
+                String[] parts = variableDeclaration.split("\\s+");
+                if (parts.length != 2)
+                    throw new CodeException("Wrong variable declaration in method " + name);
+                String type = parts[0];
+                String name = parts[1];
+                VariableGenerator generator = VariableGenerator.getInstance();
+                Variable variableToAdd = generator.makeVariable(type, null, name, null);
+                closure.addVariable(variableToAdd);
+                callVariables.add(variableToAdd);
+            }
         }
 
     }

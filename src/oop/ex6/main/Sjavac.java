@@ -51,5 +51,14 @@ public class Sjavac {
             block.blockCheck();
             checkBlocks(block, globalBlock);
         }
+        if(!(codeBlock instanceof GlobalBlock)){
+            for(Variable var : globalBlock.getVars()){
+                codeBlock.addVarToClosure(var);
+            }
+            for (Method method : globalBlock.getMethods()){
+                codeBlock.addMethod(method);
+            }
+        }
+        codeBlock.blockCheck();
     }
 }

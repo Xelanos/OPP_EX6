@@ -14,7 +14,7 @@ public class RegexWorker {
     private static final String IS_BAD_COMMENT = "[\\/]";
     private static final String BLANK_ROW = "^\\s*$";
     private static final String END_WITH_OPEN_BARKETS = "(.*?)(?<=\\))";
-    private static final String END_WITH_EQUAL = "=$";
+    private static final String END_WITH_EQUAL = "=$|[\\s\\t]?+\\w+[\\s\\t]*?\\=+[\\s\\t]*?[\\-]?\\w[\\.]?\\w*";
     private static final String FIRST_WORD =
             "(\\w*)+[(]|^\\s*(\\w*)+[(]|(\\w*)\\s[=]|^\\s*(\\w*)\\s[=]|^\\s*(\\w*)|(\\w*)";
     private static final String SECOND_WORD = "(?:\\W+\\w+){1}(\\S+)";
@@ -35,9 +35,10 @@ public class RegexWorker {
     public static final String CONDITION_CONTENT = "([\\-]\\d+[\\.]+\\d+)|(\\w+)";
     public static final String VARIABLE_NAME = "^[a-zA-Z_][a-zA-Z_$0-9]*$";
     private static final String BAD_TEMPLATE = "\\w+\\s\\w\\s\\=\\s\\w+\\((.?)*?\\)";
-    private static final String METHOD_NAME = "[\\s\\t]*\\w*[\\s\\t]?+\\((?<=\\()";
+    private static final String METHOD_NAME = "[\\s\\t]*?\\w*[\\s\\t]?\\(";
     public static final String CALL_STRING = "\\(([^)]+)\\)";
     public static final String METHOD_NAME_CHECK = "^[a-zA-Z]\\w*";
+    public static final String VAR_NAME_FROM_DECLARE = "^[\\s\\t]?\\w+";
 
 
     /**
@@ -277,7 +278,7 @@ public class RegexWorker {
      * @param word words to remove spaces from.
      * @return the word without spaces.
      */
-    private static String cleanSpace(String word){
+    public static String cleanSpace(String word){
         String result = word.replace(" ","");
         return result.trim();
     }
@@ -321,5 +322,16 @@ public class RegexWorker {
             result = true;
         }
         return result;
+    }
+
+    public static String getVarNameFromDeclare(String line){
+        Pattern firstWordPattern = Pattern.compile(VAR_NAME_FROM_DECLARE);
+        Matcher result = firstWordPattern.matcher(line);
+        if (result.find()){
+            return result.group(0);
+        }
+        else{
+            return "";
+        }
     }
 }
