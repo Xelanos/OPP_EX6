@@ -50,10 +50,6 @@ public class ConditionBlock extends CodeBlock {
         }
     }
 
-    @Override
-    void blockCheck() throws CodeException {
-
-    }
 
     public static boolean isNum(String line){
         boolean result = true;

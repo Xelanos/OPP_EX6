@@ -57,7 +57,7 @@ public class RegexWorker {
         return varName;
     }
 
-    private static String cleanWord(String word){
+    public static String cleanWord(String word){
         String cleanWord;
         Pattern cleanPattern = Pattern.compile(CLEAN_SPACE);
         Matcher result = cleanPattern.matcher(word);
@@ -92,12 +92,12 @@ public class RegexWorker {
         return cleanWord.equals("while");
     }
 
-    static boolean isCallingMethod(String startingWord){
+    public static boolean isCallingMethod(String startingWord){
         return isGoodByRegex(startingWord, END_WITH_OPEN_BARKETS);
     }
 
 
-    static boolean isCallingVar(String startingWord){
+    public static boolean isCallingVar(String startingWord){
         return isGoodByRegex(startingWord, END_WITH_EQUAL);
     }
 
@@ -127,7 +127,7 @@ public class RegexWorker {
        return isGoodByRegex(line, SCOPE_CLOSING);
     }
 
-    static boolean isReturn(String line){
+    public static boolean isReturn(String line){
         return isGoodByRegex(line, RETURN);
     }
 

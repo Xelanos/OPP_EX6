@@ -58,14 +58,16 @@ public class Parser {
                     } else if (RegexWorker.isClosingScope(line)) {    // if is closing brackets
                         CodeBlock tempBlock = blocks.pop();
                         try {
-                            Method method = ((Method) (tempBlock));
-                            if (!globalBlock.addMethod(method)) {
-                                throw new CodeException("Methods with same name");
+                            if (tempBlock instanceof Method) {
+                                Method method = ((Method) (tempBlock));
+                                if (!globalBlock.addMethod(method)) {
+                                    throw new CodeException("Methods with same name");
+                                }
+                            } else {
+                                blocks.peek().addBlock(tempBlock);
                             }
                         } catch (CodeException codeException) {
                             throw codeException;
-                        } catch (Exception e) {
-                            blocks.peek().addBlock(tempBlock);
                         }
                     } else {
                         if (RegexWorker.isCommentOrBlank(line)) {    // if a blank line or comment

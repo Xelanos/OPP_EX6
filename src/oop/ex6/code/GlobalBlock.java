@@ -28,8 +28,13 @@ public class GlobalBlock extends CodeBlock {
         return unknownVars;
     }
 
-    @Override
-    void blockCheck() throws CodeException {
+    public void makeBlocks(){
+        for (Method method : closure.getMethods()){
+            blocks.add(method);
+        }
+    }
 
+    public HashSet<Method> getMethods(){
+        return this.closure.getMethods();
     }
 }

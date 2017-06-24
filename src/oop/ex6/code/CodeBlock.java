@@ -1,5 +1,6 @@
 package oop.ex6.code;
 
+import com.sun.org.apache.regexp.internal.RE;
 import oop.ex6.main.CodeException;
 import oop.ex6.main.RegexWorker;
 import oop.ex6.variables.Variable;
@@ -13,7 +14,15 @@ public abstract class CodeBlock {
     protected LinkedList<String> code;
     protected LinkedList<CodeBlock> blocks;
 
-    abstract void blockCheck() throws CodeException;
+    public void blockCheck() throws CodeException{
+        for (String codeLine : code){
+            if (RegexWorker.isCallingMethod(codeLine)){
+                String methodName = RegexWorker.cleanWord(codeLine);
+                String callString = RegexWorker.parametersInBrackets(codeLine);
+                methoedCallCheck(methodName, callString);
+            }
+        }
+    }
 
     protected void methoedCallCheck(String methodName,String callString) throws CodeException {
         Method method = closure.getMethod(methodName);
@@ -112,5 +121,9 @@ public abstract class CodeBlock {
     public void removeVariableFromClosure(Variable variable){
         String varName = variable.getName();
         closure.deleteVar(varName);
+    }
+
+    public LinkedList<CodeBlock> getBlocks(){
+        return this.blocks;
     }
 }
