@@ -16,7 +16,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Created by OrMiz on 12/06/2017.
+ * A class re
  */
 public class Parser {
 

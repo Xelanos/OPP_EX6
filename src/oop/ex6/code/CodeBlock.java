@@ -3,12 +3,9 @@ package oop.ex6.code;
 import oop.ex6.main.CodeException;
 import oop.ex6.main.RegexWorker;
 import oop.ex6.variables.Variable;
-import oop.ex6.variables.VariableException;
 
 import java.util.HashSet;
 import java.util.LinkedList;
-import java.util.List;
-
 
 public abstract class CodeBlock {
 
@@ -34,14 +31,27 @@ public abstract class CodeBlock {
         }
     }
 
+    /**
+     * added line to the blocks code.
+     * @param line line to add.
+     */
     public void addLineToCode(String line){
         code.add(line);
     }
 
+    /**
+     * adds a variable to the blocks closure.
+     * @param variable variable to add.
+     */
     public void addVarToClosure(Variable variable){
         closure.addVariable(variable);
     }
 
+    /**
+     * check if a certain name upholds the rules of naming in s-java.
+     * @param name name to check.
+     * @throws NamingException if naming is illegal.
+     */
     public static void checkIfNameValid(String name) throws NamingException {
         if (Character.isDigit(name.charAt(0))) {
             throw new NamingException(name," name can't start with a number");
@@ -57,6 +67,10 @@ public abstract class CodeBlock {
         }
     }
 
+    /**
+     * added the closure of another block to this one.
+     * @param block block to added closure from.
+     */
     public void combineClosure(CodeBlock block){
         HashSet<Variable> oldVars = block.closure.getVariables();
         HashSet<Method> oldMethods = block.closure.getMethods();

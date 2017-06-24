@@ -15,7 +15,10 @@ import java.util.ArrayList;
 public class VariableGenerator {
     private static VariableGenerator instance = null;
 
-    private VariableGenerator(){} // private const. to restrict new instances
+    /**
+     * private const. to restrict new instances
+     */
+    private VariableGenerator(){}
 
     /**
      * @return the generator only instance.
@@ -52,7 +55,17 @@ public class VariableGenerator {
         }
     }
 
-    public ArrayList<Variable> makeVariablesFromLine(String line, CodeBlock block, GlobalBlock globalBlock) throws CodeException {
+    /**
+     * makes variables from a variables related line.
+     * works with every line that has variables such as : declaration , assignment, method declaration.
+     * @param line line to analyze variables from
+     * @param block if trying to add variables in a specific block, can be null if not.
+     * @param globalBlock global block of the current program.
+     * @return an array of variables to be added.
+     * @throws CodeException thrown when making a variable from the line is illegal.
+     */
+    public ArrayList<Variable> makeVariablesFromLine(String line, CodeBlock block, GlobalBlock globalBlock)
+            throws CodeException {
         ArrayList<String> varsCommands = RegexWorker.getVarsCommands(RegexWorker.parametersInBrackets(line));
         ArrayList<Variable> variables = new ArrayList<>();
         String type, value, name, modifier;
@@ -98,9 +111,10 @@ public class VariableGenerator {
                         if (variableInClosure != null) {
                             if (type.equals(variableInClosure.getType())) {
                                 String variableInClosureValue = variableInClosure.getValue();
-                                if (variableInClosureValue.equals("") && (!isInMethodSignature(variableInClosure.getName(), block))) {
-                                    throw new VariableException("Referencing variable " + variableInClosure.getName() +
-                                            " without assignment");
+                                if (variableInClosureValue.equals("") &&
+                                        (!isInMethodSignature(variableInClosure.getName(), block))) {
+                                    throw new VariableException("Referencing variable " +
+                                            variableInClosure.getName() + " without assignment");
                                 }
                                 value = variableInClosureValue;
                             } else throw new VariableException(name, variableInClosure.getName());
@@ -109,7 +123,8 @@ public class VariableGenerator {
                 }
                 variable = makeVariable(type, value, name, modifier);
                 if (isVarExists(variables, variable, block)) {
-                    throw new CodeException("variable " + variable.getName() + " is already exists in the scope");
+                    throw new CodeException("variable " + variable.getName() +
+                            " is already exists in the scope");
                 }
                 else if(isGlobalVar(variable, globalBlock)) {
                     if (!line.contains("=")){
@@ -144,40 +159,47 @@ public class VariableGenerator {
         }
     }
 
-    boolean isVarExists(ArrayList<Variable> variables, Variable variable, CodeBlock block){
-        for (Variable var : variables){ // checking Vars from the current line
-            if (var.getName().equals(variable.getName())){
+    /**
+     * check if variable already exists in the current scope
+     * @param variables an array of variables of the current line.
+     * @param variable variable to check if found.
+     * @param block block in which the variable is added. can be null if block is not opened yet.
+     * @return true if the variable is in the block, false if not.
+     */
+    boolean isVarExists(ArrayList<Variable> variables, Variable variable, CodeBlock block) {
+        for (Variable var : variables) { // checking Vars from the current line
+            if (var.getName().equals(variable.getName())) {
                 return true;
             }
         }
-        if (block instanceof Method){ // in case the block is method, checking the signature parameters
-            for (Variable var : ((Method) block).getCallVariables()){
-                if (var.getName().equals(variable.getName())){
-                    return true;
-                }
-            }
-        }
-        if (block != null) { // checking local scope
-            for (Variable var : block.getVars()) {
+        if (block instanceof Method) { // in case the block is method, checking the signature parameters
+            for (Variable var : ((Method) block).getCallVariables()) {
                 if (var.getName().equals(variable.getName())) {
                     return true;
                 }
             }
         }
-        return false;
+        // checking local scope
+        return block != null && block.containVar(variable.getName());
     }
 
-    boolean isGlobalVar(Variable variable, GlobalBlock globalBlock){
-        if (globalBlock != null) {
-            for (Variable var : globalBlock.getVars()) { // checking global vars
-                if (var.getName().equals(variable.getName())) {
-
-                    return true;
-                }
-            }
-        }
-        return false;
+    /**
+     * check if the variable is in the global block
+     * @param variable variable to check for
+     * @param globalBlock global block of the program.
+     * @return true if the variable is in global, false if not.
+     */
+    boolean isGlobalVar(Variable variable, GlobalBlock globalBlock) {
+        return globalBlock != null && globalBlock.containVar(variable.getName());
     }
+
+
+    /**
+     * check if variable is in the method signature.
+     * @param variableName name of the variable to check.
+     * @param block method (preferably) to check in.
+     * @return true if variable is in the method signature.
+     */
     boolean isInMethodSignature(String variableName, CodeBlock block){
         if (block instanceof Method) {
             Method method = (Method)(block);
