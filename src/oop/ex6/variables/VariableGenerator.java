@@ -109,8 +109,30 @@ public class VariableGenerator {
                 variable = makeVariable(type, value, name, modifier);
                 if (isVarExists(variables, variable, block)) {
                     throw new CodeException("variable " + variable.getName() + " is already exists in the scope");
-                } else {
-                    variables.add(variable);
+                }
+                else if(isGlobalVar(variable, globalBlock)) {
+                    if (!line.contains("=")){
+                        variables.add(variable);
+                    }
+                }
+                 else {
+                    if(line.contains("=")){
+                        if(globalBlock.containVar(variable.getValue())){
+                            Variable temp = globalBlock.getVariable(variable.getValue(), globalBlock);
+                            if(!temp.getValue().isEmpty()){
+                                variables.add(variable);
+                            }
+                            else{
+                                throw new CodeException("Global var has no value");
+                            }
+                        }
+                        else {
+                            variables.add(variable);
+                        }
+                    }
+                    else {
+                        variables.add(variable);
+                    }
                 }
                 prevType = type;
             }
@@ -122,14 +144,21 @@ public class VariableGenerator {
     }
 
     boolean isVarExists(ArrayList<Variable> variables, Variable variable, CodeBlock block){
-        for (Variable var : variables){
+        for (Variable var : variables){ // checking Vars from the current line
             if (var.getName().equals(variable.getName())){
                 return true;
             }
         }
-        if (block instanceof Method){
+        if (block instanceof Method){ // in case the block is method, checking the signature parameters
             for (Variable var : ((Method) block).getCallVariables()){
                 if (var.getName().equals(variable.getName())){
+                    return true;
+                }
+            }
+        }
+        if (block != null) { // checking local scope
+            for (Variable var : block.getVars()) {
+                if (var.getName().equals(variable.getName())) {
                     return true;
                 }
             }
@@ -137,6 +166,17 @@ public class VariableGenerator {
         return false;
     }
 
+    boolean isGlobalVar(Variable variable, GlobalBlock globalBlock){
+        if (globalBlock != null) {
+            for (Variable var : globalBlock.getVars()) { // checking global vars
+                if (var.getName().equals(variable.getName())) {
+
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
     boolean isInMethodSignature(String variableName, CodeBlock block){
         if (block instanceof Method) {
             Method method = (Method)(block);
