@@ -92,7 +92,14 @@ Object Oriented Design-
         Then, we will need to check if the return value of the function is the type of the function (weather
         if it's a primitive or another variable), we will  need to do this for any returns statement and not
         just the last one.
-        Lastly we will need to add support for variable assignments
+        Lastly we will need to add support for variable assignments which after the "=" is a function call,
+        we will need to check if the function call is legal and if the return type matches the variable
+        declared type.
+
+        Using methods of standard java - We will preemptive compile all of the java standard methods
+         into our own Method objects. Then we take all of those methods and inject them into the global
+         block closure , which makes it known to any closure below it. Then, every call to standard javas
+         methods will be check like any other - by name and by calling variables.
 
 
 Regular Expressions -
