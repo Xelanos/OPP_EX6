@@ -37,6 +37,7 @@ public class RegexWorker {
     private static final String BAD_TEMPLATE = "\\w+\\s\\w\\s\\=\\s\\w+\\((.?)*?\\)";
     private static final String METHOD_NAME = "[\\s\\t]*\\w*[\\s\\t]?+\\((?<=\\()";
     public static final String CALL_STRING = "\\(([^)]+)\\)";
+    public static final String METHOD_NAME_CHECK = "^[a-zA-Z]\\w*";
 
 
     /**

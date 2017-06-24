@@ -64,7 +64,7 @@ public class Method extends CodeBlock {
      * @throws NamingException if the name is invalid.
      */
     void checkName(String name) throws NamingException{
-        if (!name.matches(RegexWorker.METHOD_NAME)){
+        if (!name.matches(RegexWorker.METHOD_NAME_CHECK)){
             throw new NamingException(name, "Illegal method name");
         }
     }
