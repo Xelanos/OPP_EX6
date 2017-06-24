@@ -25,8 +25,8 @@ public abstract class CodeBlock {
     public void blockCheck() throws CodeException{
         for (String codeLine : code){
             if (RegexWorker.isCallingMethod(codeLine)){
-                String methodName = RegexWorker.cleanWord(codeLine);
-                String callString = RegexWorker.parametersInBrackets(codeLine);
+                String methodName = RegexWorker.getMethodName(codeLine);
+                String callString = RegexWorker.getCleanCallString(codeLine);
                 methoedCallCheck(methodName, callString);
             }
         }
@@ -47,9 +47,16 @@ public abstract class CodeBlock {
         for (int i=0; i<variables.length; i++){
             String valueToCheck = variables[i];
             Variable varToCheck = method.callVariables.get(i);
-            if (!varToCheck.checkIfValueValid(valueToCheck)){
+            if(this.closure.containVar(valueToCheck)){
+                Variable parameterVar = this.closure.getVariable(valueToCheck, null, this);
+                if (!varToCheck.checkIfValueValid(parameterVar.getValue())){
+                    throw new CodeException("Error in method "+methodName+" parameter "+i+".\n"+
+                            "Expected "+varToCheck.getType());
+                }
+            }
+            else if (!varToCheck.checkIfValueValid(valueToCheck)){
                 throw new CodeException("Error in method "+methodName+" parameter "+i+".\n"+
-                        "Expected"+varToCheck.getType());
+                        "Expected "+varToCheck.getType());
             }
         }
     }

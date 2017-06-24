@@ -4,6 +4,7 @@ package oop.ex6.main;
 import oop.ex6.code.CodeBlock;
 import oop.ex6.code.GlobalBlock;
 import oop.ex6.code.Method;
+import oop.ex6.variables.Variable;
 
 import java.io.File;
 import java.io.IOException;
@@ -43,6 +44,9 @@ public class Sjavac {
                 for (Method method : globalBlock.getMethods()){
                     block.addMethod(method);
                 }
+            }
+            for (Variable var : codeBlock.getVars()){
+                block.addVarToClosure(var);
             }
             block.blockCheck();
             checkBlocks(block, globalBlock);

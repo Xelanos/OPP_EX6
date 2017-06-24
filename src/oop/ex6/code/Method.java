@@ -2,6 +2,7 @@ package oop.ex6.code;
 
 
 import oop.ex6.main.CodeException;
+import oop.ex6.main.RegexWorker;
 import oop.ex6.variables.Variable;
 import oop.ex6.variables.VariableGenerator;
 
@@ -41,7 +42,7 @@ public class Method extends CodeBlock {
         }
         this.modifier = modifier;
         VariableGenerator generator = VariableGenerator.getInstance();
-        callVariables = generator.makeVariablesFromLine(signature, null, null);
+        callVariables = generator.makeVariablesFromLine(RegexWorker.getCleanCallString(signature), null, null);
     }
 
     @Override
