@@ -24,7 +24,7 @@ public class Method extends CodeBlock {
         closure = new Closure();
         code = new LinkedList<>();
         blocks = new LinkedList<>();
-        CodeBlock.checkIfNameValid(name);
+        checkName(name);
         this.name = name;
         if (!Objects.equals(modifier, "void")){
             throw new CodeException("Problem in "+name+" :s-Java can only support void methods");
@@ -57,4 +57,15 @@ public class Method extends CodeBlock {
         return name;
     }
     public ArrayList<Variable> getCallVariables(){ return callVariables;}
+
+    /**
+     * check if the name of the method is valid
+     * @param name method name
+     * @throws NamingException if the name is invalid.
+     */
+    void checkName(String name) throws NamingException{
+        if (!name.matches(RegexWorker.METHOD_NAME)){
+            throw new NamingException(name, "Illegal method name");
+        }
+    }
 }
