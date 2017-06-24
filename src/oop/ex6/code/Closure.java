@@ -10,22 +10,41 @@ import java.util.HashSet;
  */
 public class Closure {
 
+    /** variables of the closure */
     private HashSet<Variable> variables;
+
+    /** methods of the closure  */
     private HashSet<Method> methods;
 
-    public Closure(){
+    /**
+     * constructor initialize sets.
+     */
+    Closure(){
         variables = new HashSet<>();
         methods = new HashSet<>();
     }
 
+    /**
+     * add a variable to the closure.
+     * @return true if managed to successfully add the variable, false if not.
+     */
     boolean addVariable(Variable variableToAdd){
         return variables.add(variableToAdd);
     }
 
+    /**
+     * add a method to the closure.
+     * @return true if managed to successfully add the variable, false if not.
+     */
     boolean addMethod(Method methodToAdd){
         return methods.add(methodToAdd);
     }
 
+    /**
+     * @param methodName name of the method to get
+     * @return the method object in the closure.
+     * @throws CodeException if method is not in closure.
+     */
     Method getMethod(String methodName) throws CodeException {
         for (Method method : methods){
             if (method.getName().equals(methodName)){
@@ -35,6 +54,10 @@ public class Closure {
         throw new CodeException("Unknown method: "+methodName);
     }
 
+    /**
+     * @param methodName name to check.
+     * @return if method is in closure.
+     */
     boolean containsMethod(String methodName){
         for (Method method : methods){
             if (method.getName().equals(methodName)){
@@ -43,6 +66,15 @@ public class Closure {
         }
         return false;
     }
+
+    /**
+     * gets a variable object from the closure.
+     * @param variableName variable to get.
+     * @param block block to get from.
+     * @param codeBlock current global of the program.
+     * @return the variable object required.
+     * @throws CodeException if the variable is unknown.
+     */
     Variable getVariable(String variableName, GlobalBlock block, CodeBlock codeBlock) throws CodeException {
         for (Variable variable : variables){
             if (variable.getName().equals(variableName)){
@@ -64,6 +96,10 @@ public class Closure {
         }
     }
 
+    /**
+     * @param varName variable name to check.
+     * @return if the closure has the variable.
+     */
     boolean containVar(String varName){
         for (Variable variable : variables){
             if (variable.getName().equals(varName)){
@@ -72,6 +108,7 @@ public class Closure {
         }
         return false;
     }
+
     public HashSet<Variable> getVariables(){
         return variables;
     }

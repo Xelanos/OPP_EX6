@@ -3,7 +3,7 @@ package oop.ex6.code;
 import oop.ex6.main.CodeException;
 
 /**
- * Created by or323 on 18/06/2017.
+ * A class for exceptions from bad names.
  */
 public class NamingException extends CodeException {
 

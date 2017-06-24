@@ -11,6 +11,8 @@ import java.util.regex.Pattern;
 
 public class ConditionBlock extends CodeBlock {
 
+
+
     public ConditionBlock(String Condition, HashSet<Variable> oldVars) throws CodeException{
         closure = new Closure();
         code = new LinkedList<>();
@@ -51,6 +53,10 @@ public class ConditionBlock extends CodeBlock {
     }
 
 
+    /**
+     * @param line line to check
+     * @return true if this line a number, false if not.
+     */
     public static boolean isNum(String line){
         boolean result = true;
         try{

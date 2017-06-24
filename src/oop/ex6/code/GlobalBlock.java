@@ -8,11 +8,16 @@ import java.util.LinkedList;
 
 
 /**
- * Created by OrMiz on 12/06/2017.
+ * A class representing global block.
  */
 public class GlobalBlock extends CodeBlock {
 
+    /** vars pending a check */
     private HashSet<String> unknownVars;
+
+    /**
+     * constructor initialize data structures.
+     */
     public GlobalBlock(){
         closure = new Closure();
         code = new LinkedList<>();
@@ -20,6 +25,10 @@ public class GlobalBlock extends CodeBlock {
         unknownVars = new HashSet<>();
     }
 
+    /**
+     * adds a variable to the unknown variables array, to be check later
+     * @param variableName variable name to add.
+     */
     public void addToUnknown(String variableName){
         unknownVars.add(variableName);
     }

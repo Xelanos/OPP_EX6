@@ -8,10 +8,18 @@ import oop.ex6.variables.Variable;
 import java.util.HashSet;
 import java.util.LinkedList;
 
+/**
+ * A representing a generic code block.
+ */
 public abstract class CodeBlock {
 
+    /** closure of the block  */
     protected Closure closure;
+
+    /** code lines for this block */
     protected LinkedList<String> code;
+
+    /** sub-block of this block */
     protected LinkedList<CodeBlock> blocks;
 
     public void blockCheck() throws CodeException{
@@ -24,6 +32,12 @@ public abstract class CodeBlock {
         }
     }
 
+    /**
+     * check if the call to function is valid.
+     * @param methodName name if the method called.
+     * @param callString the variables in the call
+     * @throws CodeException if call is illegal.
+     */
     protected void methoedCallCheck(String methodName,String callString) throws CodeException {
         Method method = closure.getMethod(methodName);
         String[] variables = callString.split(",");
@@ -91,10 +105,19 @@ public abstract class CodeBlock {
         }
     }
 
+    /**
+     * added a block to this blocks array of sub-blocks
+     * @param block block to add.
+     */
     public void addBlock(CodeBlock block){
         blocks.add(block);
     }
 
+    /**
+     * adds a method to this blocks closure.
+     * @param method method to add.
+     * @return true if added successfully, false if closure has already a method of the same name.
+     */
     public boolean addMethod(Method method){
         if(closure.containsMethod(method.getName()))
         {
@@ -106,18 +129,37 @@ public abstract class CodeBlock {
         }
     }
 
+    /**
+     * check if this block has the variable.
+     * @param varName name of the variable to check.
+     * @return true if block has the variable, false if not.
+     */
     public boolean containVar(String varName){
         return closure.containVar(varName);
     }
 
+    /**
+     * @return the set of variables this block knows.
+     */
     public HashSet<Variable> getVars(){
         return this.closure.getVariables();
     }
 
+    /**
+     * gets a variable from this blocks
+     * @param variableName name of the variable to get.
+     * @param block current global block.
+     * @return the variable object if found
+     * @throws CodeException when variable is not found.
+     */
     public Variable getVariable(String variableName, GlobalBlock block) throws CodeException {
         return closure.getVariable(variableName, block, this);
     }
 
+    /**
+     * deletes a variable from closure.
+     * @param variable variable object to delete.
+     */
     public void removeVariableFromClosure(Variable variable){
         String varName = variable.getName();
         closure.deleteVar(varName);

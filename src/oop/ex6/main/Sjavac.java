@@ -8,7 +8,9 @@ import oop.ex6.code.Method;
 import java.io.File;
 import java.io.IOException;
 
-
+/**
+ * main class for the program.
+ */
 
 public class Sjavac {
     public static void main(String[] args) {

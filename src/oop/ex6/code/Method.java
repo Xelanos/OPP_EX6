@@ -10,15 +10,26 @@ import java.util.LinkedList;
 import java.util.Objects;
 
 /**
- * Created by OrMiz on 12/06/2017.
+ * A class representing a method.
  */
 public class Method extends CodeBlock {
 
+    /** method name */
     protected String name;
+    /** method signature */
     protected String[] signature;
+    /** method modifier */
     protected String modifier;
+    /** method callVariables */
     protected ArrayList<Variable> callVariables;
 
+    /**
+     * constructor for the method object.
+     * @param name method name.
+     * @param signature method signature.
+     * @param modifier method modifier.
+     * @throws CodeException thrown when name or modifier are illegal or when vars in signature are not good.
+     */
     public Method(String name, String signature, String modifier) throws CodeException {
         closure = new Closure();
         code = new LinkedList<>();

@@ -5,31 +5,32 @@ import oop.ex6.code.ConditionBlock;
 import oop.ex6.main.CodeException;
 
 /**
- * Created by OrMiz on 12/06/2017.
+ * A class for boolean variable.
  */
 class Boolean extends Variable {
 
+    /**
+     * constructor for the variable.
+     * @param value value to put in the variable.
+     * @param name name of the variable.
+     * @param modifier modifier for the variable.
+     * @throws CodeException if name is illegal or value doesn't match type.
+     */
     Boolean(String value,String name, String modifier) throws CodeException{
             super(value, name, modifier);
     }
 
+    @Override
     public boolean checkIfValueValid(String stringToCheck) {
         boolean result = false;
         if ((stringToCheck.equals("false")) || (stringToCheck.equals("true"))) {
             result = true;
-        }
-        else if(ConditionBlock.isNum(stringToCheck)){
-            result = true;
-        }
-        else if(stringToCheck.isEmpty()){
-            result = true;
-        }
-        else {
-            result = false;
-        }
+        } else
+            result = ConditionBlock.isNum(stringToCheck) || stringToCheck.isEmpty();
         return result;
     }
 
+    @Override
     void setType() {
         this.type = "boolean";
     }

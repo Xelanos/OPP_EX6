@@ -198,7 +198,7 @@ public class VariableGenerator {
      * check if variable is in the method signature.
      * @param variableName name of the variable to check.
      * @param block method (preferably) to check in.
-     * @return true if variable is in the method signature.
+     * @return true if variable is in the method signature. false if block is not method or if not found.
      */
     boolean isInMethodSignature(String variableName, CodeBlock block){
         if (block instanceof Method) {

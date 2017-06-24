@@ -16,10 +16,17 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * A class re
+ * A class for analyzing lines of code.
  */
 public class Parser {
 
+    /**
+     * process the lines of the sJava file to blocks.
+     * @param sJavaFile file to process lines from
+     * @return a global block from to file.
+     * @throws CodeException if the code is illegal.
+     * @throws IOException if can't access to the file for some reason.
+     */
     static GlobalBlock processesLines(File sJavaFile) throws CodeException, IOException{
         BufferedReader lineReader = new BufferedReader(new FileReader(sJavaFile.getPath()));
         GlobalBlock globalBlock = new GlobalBlock();
@@ -91,6 +98,12 @@ public class Parser {
         }
     }
 
+    /**
+     * a method which makes Method object based on a method declare line.
+     * @param line a method declare line.
+     * @return the appropriate Method object.
+     * @throws CodeException if method declaration is illegal.
+     */
     private static Method makeMethod(String line) throws CodeException {
         String modifier = null, name = null, signature = null;
         Pattern p = Pattern.compile(RegexWorker.METHOD_DECLARE);
@@ -103,7 +116,15 @@ public class Parser {
         return new Method(name, signature, modifier);
     }
 
-    private static ConditionBlock makeConditionBlock(String line, HashSet<Variable> knownVars) throws CodeException{
+    /**
+     * a method which makes a new condition block object based on a line.
+     * @param line line to read from
+     * @param knownVars vars to add to this blocks known vards.
+     * @return the appropriate ConditionBlock.
+     * @throws CodeException if condition is illegal.
+     */
+    private static ConditionBlock makeConditionBlock(String line, HashSet<Variable> knownVars)
+            throws CodeException{
         String conditionContent = null;
         Pattern p = Pattern.compile((RegexWorker.CONDITION_DECLARE));
         Matcher matcher = p.matcher(line);
@@ -116,6 +137,11 @@ public class Parser {
         return new ConditionBlock(conditionContent, knownVars);
     }
 
+    /**
+     * checks the unknown vars in the global.
+     * @param globalBlock global block to check.
+     * @throws CodeException if any variable remains unknown.
+     */
     private static void checkUnknown(GlobalBlock globalBlock) throws CodeException{
         for (String varName : globalBlock.getUnknownVars()){
             if(globalBlock.getVariable(varName, globalBlock) == null){
