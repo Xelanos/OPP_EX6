@@ -17,12 +17,12 @@ public class Sjavac {
     public static void main(String[] args) {
         try {
             File file = new File(args[0]);
-            GlobalBlock globalBlock = Parser.processesLines(file);
-            globalBlock.makeBlocks();
+            GlobalBlock globalBlock = Parser.processesLines(file);  // Create blocks and fill up codes
+            globalBlock.makeBlocks();   // Put all the blocks created in one place
             for(CodeBlock codeBlock : globalBlock.getBlocks()){
-                checkBlocks(codeBlock, globalBlock);
+                checkBlocks(codeBlock, globalBlock);    // check each block
             }
-            globalBlock.blockCheck();
+            globalBlock.blockCheck();   // check the global block
         }
         catch (CodeException e){
             System.out.println("1");
@@ -38,27 +38,33 @@ public class Sjavac {
        }System.out.println("0");
     }
 
+    /**
+     * Goes over the CodeLines in the block and checks if it's a legal command.
+     * @param codeBlock - the block to check.
+     * @param globalBlock - the global scope with all the methods and global variables
+     * @throws CodeException - in case there is an illegal command
+     */
     private static void checkBlocks(CodeBlock codeBlock, GlobalBlock globalBlock) throws CodeException{
-        for (CodeBlock block : codeBlock.getBlocks()){
-            if (!(block instanceof GlobalBlock)){
+        for (CodeBlock block : codeBlock.getBlocks()){ // check all the lower scopes
+            if (!(block instanceof GlobalBlock)){   // if the block we check is not the global
                 for (Method method : globalBlock.getMethods()){
-                    block.addMethod(method);
+                    block.addMethod(method);    // get all the methods so the scope will know them
                 }
             }
-            for (Variable var : codeBlock.getVars()){
+            for (Variable var : codeBlock.getVars()){ // get all the vars from the higher scope
                 block.addVarToClosure(var);
             }
-            block.blockCheck();
-            checkBlocks(block, globalBlock);
+            block.blockCheck(); // check the current block
+            checkBlocks(block, globalBlock);    // call again with the lower block
         }
-        if(!(codeBlock instanceof GlobalBlock)){
+        if(!(codeBlock instanceof GlobalBlock)){    // if the block we check is not global block
             for(Variable var : globalBlock.getVars()){
-                codeBlock.addVarToClosure(var);
+                codeBlock.addVarToClosure(var); // add all the global vars to the scope
             }
             for (Method method : globalBlock.getMethods()){
-                codeBlock.addMethod(method);
+                codeBlock.addMethod(method);    // add all the methods to the scope
             }
         }
-        codeBlock.blockCheck();
+        codeBlock.blockCheck(); // check the current block
     }
 }

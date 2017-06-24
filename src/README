@@ -11,7 +11,24 @@ xelanos
 ==============================================================================================================
                                               =  Design  =
 ==============================================================================================================
+The program "flow" goes in the next order:
+    1. The main method calls the method processesLines of the Parser class. This method goes line by line and
+       according to the command in the line it decides what to do. This method only creates blocks (scopes)
+       or fill the blocks with the code lines (each scope has it's own set of code lines).
+       During the creation of the block the method actives other methods that check if the input is legal.
+    2. After going over the whole file The processesLines method returns a GlobalBlock (The main scope) that
+       saves the whole blocks created by order, the global variables and the whole program methods.
+    3. The main method calls the checkBlocks methods that goes over all the scopes (lower then the global) and
+       checks it's code lines correctness.
+    4. After checking all the lower scopes, the main program checks the global scope command lines.
+All the exceptions are managed by the Main method and are thrown by the methods that check the files.
+We analyzed the exercise and realized there are 3 types of code blocks: Method, Global or Condition.
+each block has it's own unique properties but they all share the same structure.
+Another big class in this program is the VariableGenerator class the gets any kind of Vars creation command
+(Parameters of a method, regular code line), checks all the parameters and creates the requested variable.
 
+All the Regex work happens with the RegexWorker class that has all the Regex commands and all the methods that
+uses the Regex commands. any Regex usage has to go from this class.
 
 
 
